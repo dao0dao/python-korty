@@ -1,0 +1,125 @@
+<div class="container">
+    <div class="container_head">
+        <p class="text">Sortuj po:</p>
+        <button
+            class="btn--sort"
+            [ngClass]="{ 'btn--sort--active': sortView === 'name' }"
+            (click)="sortBy('name')"
+        >
+            Imię
+            <svg>
+                <use [attr.xlink:href]="environment.svg + '#icon-sort-up'"></use>
+            </svg>
+        </button>
+        <button
+            class="btn--sort"
+            [ngClass]="{ 'btn--sort--active': sortView === 'surname' }"
+            (click)="sortBy('surname')"
+        >
+            Nazwisko
+            <svg>
+                <use [attr.xlink:href]="environment.svg + '#icon-sort-up'"></use>
+            </svg>
+        </button>
+        <input
+            type="text"
+            class="search"
+            placeholder="Wyszukaj słowa..."
+            [(ngModel)]="searchedWord"
+            (keyup)="searchFor()"
+        >
+    </div>
+    <div *ngFor="let player of players; let i = index">
+        <div
+            *ngIf="
+        i >= itemsPerPage * (page - 1) &&
+        i < itemsPerPage * (page - 1) + itemsPerPage
+      "
+            class="container_card"
+        >
+            <p class="number">#{{ i + 1 }}</p>
+            <p class="text">{{ player.name }} {{ player.surname }}</p>
+            <div class="buttons">
+                <a
+                    class="btn btn--add btn--phone"
+                    [href]="'tel:+48' + player.telephone"
+                >
+                    <svg>
+                        <use [attr.xlink:href]="environment.svg + '#icon-phone'"></use>
+                    </svg>
+                </a>
+                <a
+                    class="btn btn--add btn--sms"
+                    [href]="'sms:+48' + player.telephone"
+                >
+                    <svg>
+                        <use [attr.xlink:href]="environment.svg + '#icon-sms'"></use>
+                    </svg>
+                </a>
+                <button
+                    class="btn btn--add"
+                    (click)="openModal(player, 'view')"
+                >
+                    <svg>
+                        <use [attr.xlink:href]="environment.svg + '#icon-zoom'"></use>
+                    </svg>
+                </button>
+                <button
+                    *ngIf="isAdmin"
+                    class="btn btn--edit"
+                    (click)="openModal(player, 'edition')"
+                >
+                    <svg>
+                        <use [attr.xlink:href]="environment.svg + '#icon-edit'"></use>
+                    </svg>
+                </button>
+                <button
+                    *ngIf="isAdmin"
+                    class="btn btn--delete"
+                    (click)="openDeletedModal(player.id!)"
+                >
+                    <svg>
+                        <use [attr.xlink:href]="environment.svg + '#icon-delete'"></use>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="pagination">
+        <p class="pagination_perPage">Graczy na stronę:</p>
+        <input
+            type="number"
+            min="1"
+            max="100"
+            class="pagination_count"
+            step="1"
+            [(ngModel)]="itemsPerPage"
+        >
+        <button class="pagination_btn">
+            <svg>
+                <use [attr.xlink:href]="environment.svg + '#icon-arrow-left'"></use>
+            </svg>
+        </button>
+        <p class="pagination_info">{{ page }} z {{ pageCount }}</p>
+        <button class="pagination_btn">
+            <svg>
+                <use [attr.xlink:href]="environment.svg + '#icon-arrow-right'"></use>
+            </svg>
+        </button>
+    </div>
+</div>
+
+<app-edition-modal
+    *ngIf="isModal"
+    [player]="modalPlayer!"
+    [viewMode]="modalViewMode"
+    [allPlayers]="players"
+    [priceList]="inputPriceList"
+    (Close)="closeModal()"
+></app-edition-modal>
+<app-delete-player-modal
+    *ngIf="isDeletedModal"
+    [deletePlayerId]="deletedPlayerId"
+    [players]="players"
+    (DeletePlayer)="deletePlayer($event)"
+></app-delete-player-modal>

@@ -1,0 +1,354 @@
+@import "~src/assets/colors";
+
+.background {
+    position: fixed;
+    z-index: 3;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $background;
+}
+.container {
+    position: relative;
+    width: 98%;
+    height: 90%;
+    padding: 15px;
+    background-color: $clearWhite;
+    border-radius: 10px;
+    &_body {
+        overflow: auto;
+        width: 100%;
+        height: 100%;
+        border: 1px solid $background;
+        border-radius: 10px;
+    }
+}
+.btnX {
+    position: absolute;
+    top: 0;
+    right: 4px;
+    width: 30px;
+    height: 30px;
+    background-color: $clearWhite;
+    border: none;
+    transform: translate(27%, -50%);
+    border-radius: 50%;
+    svg {
+        max-width: 100%;
+        max-height: 100%;
+        fill: $mainColorFour;
+    }
+}
+.title {
+    position: absolute;
+    top: 5px;
+    width: 160px;
+    margin: 0 auto;
+    text-align: center;
+    color: $mainColorOne;
+    background-color: $clearWhite;
+}
+.subtitle {
+    margin: 1rem auto 26px;
+    text-align: center;
+}
+.block {
+    margin-top: 1rem;
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: center;
+        .btn {
+            flex-basis: 40%;
+            &:first-child {
+                flex-basis: 90%;
+            }
+        }
+    }
+    &_input {
+        position: relative;
+    }
+    &_name {
+        margin: 10px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        .text {
+            padding-right: 10px;
+            font-size: 12px;
+            color: $mainColorFour;
+        }
+        .line {
+            height: 1px;
+            flex-grow: 1;
+            background-color: $background;
+        }
+    }
+    .error {
+        margin: 5px 0;
+        font-size: 0.7em;
+        text-align: center;
+        color: $mainColorOne;
+    }
+    .radio {
+        margin: 1rem 0;
+        padding-left: 5px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        input {
+            position: relative;
+            z-index: 1;
+            appearance: none;
+            -webkit-appearance: none;
+            align-self: flex-start;
+            width: 15px;
+            height: 15px;
+            &::after,
+            &::before {
+                position: absolute;
+                z-index: 2;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                border-radius: 50%;
+                display: block;
+                content: "";
+                border: 1px solid $mainColorOne;
+            }
+            &::before {
+                width: 15px;
+                height: 15px;
+                background-color: $clearWhite;
+            }
+            &::after {
+                width: 7px;
+                height: 7px;
+                border-color: transparent;
+                background-color: transparent;
+            }
+            &:checked {
+                &::after {
+                    border-color: $mainColorOne;
+                    background-color: $mainColorOne;
+                }
+            }
+        }
+        label {
+            padding-left: 20px;
+            font-size: 12px;
+        }
+    }
+    .icon {
+        position: absolute;
+        top: 50%;
+        right: calc(25% + 10px);
+        max-height: 10px;
+        max-width: 10px;
+        transform: translate(100%, -50%);
+        fill: $mainColorTwo;
+        cursor: pointer;
+        &--phone {
+            top: 0;
+            right: 0;
+            transform: none;
+            max-height: unset;
+            max-width: unset;
+            transform: none;
+            a {
+                width: 20px;
+                height: 20px;
+                margin: 0 7px;
+                display: inline-block;
+            }
+            .call,
+            .sms {
+                width: 100%;
+                height: 100%;
+            }
+            .call {
+                fill: $confirm;
+            }
+            .sms {
+                fill: $yellow;
+            }
+        }
+        &--disabled {
+            fill: $mainColorFour;
+            cursor: auto;
+            a {
+                pointer-events: none;
+                cursor: auto;
+            }
+            .call,
+            .sms {
+                fill: $mainColorFour;
+            }
+        }
+    }
+    input.select {
+        margin-left: 5%;
+    }
+    .select {
+        width: 70%;
+        margin: 0 auto;
+        padding: 5px 10px;
+        display: block;
+        border-style: solid;
+        border-color: $mainColorTwo;
+        border-width: 0 0 1px;
+        background-color: transparent;
+        font-size: 16px;
+        outline: none;
+        &:focus,
+        &:focus-visible {
+            border-color: $mainColorOne;
+        }
+        &[disabled] {
+            border-color: $background;
+        }
+        &::placeholder {
+            font-size: 0.8em;
+        }
+        &--chosen {
+            &::placeholder {
+                color: $mainColorOne;
+            }
+        }
+    }
+    .list {
+        position: absolute;
+        z-index: 2;
+        overflow: auto;
+        top: 30px;
+        left: 40%;
+        transform: translateX(-50%);
+        width: 70%;
+        max-height: 200px;
+        display: none;
+        padding: 5px 0;
+        border-radius: 3px;
+        box-shadow: 1px 2px 4px;
+        background-color: hsl(0deg 0% 95%);
+        font-size: 0.8em;
+        list-style: none;
+        cursor: pointer;
+        &--open {
+            display: block;
+        }
+        &_element {
+            min-height: 26px;
+            padding: 5px;
+            &--active {
+                background-color: $background;
+            }
+        }
+    }
+    .input {
+        margin: 0 auto;
+        padding: 5px 10px;
+        border-style: solid;
+        border-color: $mainColorTwo;
+        border-width: 0 0 1px;
+        display: block;
+        outline: none;
+        text-align: center;
+        background-color: transparent;
+        &:focus,
+        &:focus-visible {
+            border-color: $mainColorOne;
+        }
+        &--date {
+            margin-bottom: 0.5rem;
+        }
+        &[disabled] {
+            border-color: $background;
+        }
+    }
+    .info {
+        margin: 0.5rem 0 0;
+        font-size: 12px;
+        color: $mainColorOne;
+        text-align: center;
+        &--hidden {
+            opacity: 0;
+        }
+    }
+    .time {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        label {
+            margin-left: auto;
+            font-size: 12px;
+        }
+        .input {
+            margin: 0 auto 0 0;
+        }
+    }
+    .btn {
+        &--option {
+            margin: 0.5rem auto;
+        }
+        &--add {
+            margin: 2rem auto 1rem;
+        }
+        &--delete {
+            margin: 2rem auto 1rem;
+        }
+    }
+}
+@media screen and (min-width: 992px) {
+    .container {
+        width: 95%;
+        max-height: 700px;
+        &_body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+    }
+    .btnX {
+        right: 0;
+        width: 35px;
+        height: 35px;
+        transform: translate(50%, -50%);
+    }
+    .subtitle {
+        flex-basis: 100%;
+        align-self: center;
+    }
+    .block {
+        min-width: 300px;
+        flex-basis: 30%;
+        margin: 1rem;
+        &--wider {
+            min-width: 500px;
+        }
+        &--add {
+            position: relative;
+            flex-basis: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .icon {
+            right: calc(15% + 10px);
+        }
+        .icon--phone {
+            display: none;
+        }
+        input.select {
+            margin-left: auto;
+        }
+        .list {
+            left: 50%;
+        }
+    }
+}

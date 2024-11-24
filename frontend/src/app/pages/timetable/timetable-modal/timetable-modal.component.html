@@ -1,0 +1,388 @@
+<div
+    class="background"
+    (click)="selectHandler.toggleClick($event)"
+>
+    <div class="container">
+        <p
+            *ngIf="modalAction === 'edit'"
+            class="title"
+        >
+            Edycja rezerwacji
+        </p>
+        <p
+            *ngIf="modalAction === 'new'"
+            class="title"
+        >
+            Dodaj rezerwację
+        </p>
+        <button
+            type="button"
+            class="btnX"
+            (click)="closeModal()"
+        >
+            <svg>
+                <use [attr.xlink:href]="environment.svg +'#icon-close'"></use>
+            </svg>
+        </button>
+        <form
+            class="container_body"
+            [formGroup]="form"
+            (ngSubmit)="submitForm()"
+            (keydown.enter)="$event.preventDefault()"
+        >
+            <p
+                *ngIf="modalAction === 'edit'"
+                class="subtitle"
+            >
+                Data: {{editedReservation!.form.date}}, {{editedReservation!.form.timeFrom}}-{{editedReservation!.form.timeTo}}
+            </p>
+            <div class="block">
+                <div class="block_name">
+                    <p class="text">Data</p>
+                    <div class="line"></div>
+                </div>
+                <input
+                    class="input input--date"
+                    type="date"
+                    formControlName="date"
+                >
+                <div class="time">
+                    <label for="from">Od</label>
+                    <input
+                        #start
+                        class="input"
+                        type="time"
+                        id="from"
+                        step="1500"
+                        formControlName="from"
+                        (change)="handleIsTimeChosen()"
+                    >
+                    <label for="to">Do</label>
+                    <input
+                        class="input"
+                        type="time"
+                        id="to"
+                        step="1500"
+                        formControlName="to"
+                        (change)="handleIsTimeChosen()"
+                    >
+                </div>
+                <p
+                    *ngIf="!isTimeLongEnough"
+                    class="error"
+                >
+                    Min. czas gry: 30 min
+                </p>
+                <p
+                    *ngIf="!isTimeCorrect"
+                    class="error"
+                >
+                    Błędny czas startu lub końca
+                </p>
+                <p
+                    *ngIf="!isMinutesCorrect"
+                    class="error"
+                >
+                    Min. co 15 min
+                </p>
+            </div>
+            <div class="block">
+                <div class="block_name">
+                    <p class="text">Gracz 1</p>
+                    <div class="line"></div>
+                </div>
+                <div class="radio">
+                    <input
+                        type="radio"
+                        name="listOne"
+                        id="list"
+                        value="true"
+                        formControlName="listOne"
+                        (change)="handleTypeChoseOne()"
+                    >
+                    <label for="list">Wybierz z listy nr 1:</label>
+                </div>
+                <div class="block_input">
+                    <input
+                        type="hidden"
+                        formControlName="playerOne"
+                    >
+                    <div
+                        *ngIf="getFormField('playerOne')?.value"
+                        class="icon icon--phone"
+                        [ngClass]="{'icon--disabled': !isListOne}"
+                    >
+                        <a [href]="'tel:+48'+findPhone(getFormField('playerOne')?.value)">
+                            <svg class="call">
+                                <use [attr.xlink:href]="environment.svg +'#icon-phone'"></use>
+                            </svg>
+                        </a>
+                        <a [href]="'sms:+48'+findPhone(getFormField('playerOne')?.value)">
+                            <svg class="sms">
+                                <use [attr.xlink:href]="environment.svg +'#icon-sms'"></use>
+                            </svg>
+                        </a>
+                    </div>
+                    <svg
+                        [id]="isListOne ? 'listOneSvg' : ''"
+                        class="icon"
+                        [ngClass]="{'icon--disabled': !isListOne}"
+                    >
+                        <use [attr.xlink:href]="environment.svg +'#icon-arrow-down'"></use>
+                    </svg>
+                    <input
+                        type="text"
+                        class="select"
+                        [ngClass]="{'select--chosen': filter.findPlayerById(getFormField('playerOne')?.value, players)}"
+                        id="listOne"
+                        formControlName="selectOneValue"
+                        autocomplete="off"
+                        [placeholder]="'Wybrany: ' + filter.findPlayerById(getFormField('playerOne')?.value, players)"
+                        [attr.disabled]="isListOne ? null : true"
+                        (keydown.Enter)="handleKeyEnterOne()"
+                        (keydown)="selectHandler.keyDown($event, 'one', playerOne.length)"
+                        (keyup)="handleReduceListOne()"
+                        (focus)="selectHandler.focusIn('one')"
+                    >
+                    <ul
+                        class="list"
+                        [ngClass]="{'list--open': selectHandler.isOneOpen}"
+                    >
+                        <li
+                            class="list_element"
+                            [ngClass]="{'list_element--active': selectHandler.indexOne === 0}"
+                            (click)="handleSelectPlayerOne('')"
+                            (pointerenter)="selectHandler.mouseEnter($event)"
+                            (pointerleave)="selectHandler.mouseLeave($event)"
+                        >
+                            --wyczyść wpis--
+                        </li>
+                        <li
+                            class="list_element"
+                            *ngFor="let player of filteredPlayerOne; let i = index"
+                            [ngClass]="{'list_element--active': selectHandler.indexOne === i+1}"
+                            (pointerenter)="selectHandler.mouseEnter($event)"
+                            (pointerleave)="selectHandler.mouseLeave($event)"
+                            (click)="handleSelectPlayerOne(player.id!)"
+                        >
+                            {{player.name}} {{player.surname}}
+                        </li>
+                    </ul>
+                </div>
+                <div class="radio">
+                    <input
+                        type="radio"
+                        name="listOne"
+                        id="input"
+                        value="false"
+                        formControlName="listOne"
+                        (change)="handleTypeChoseOne()"
+                    >
+                    <label for="input">lub wprowadź spoza bazy:</label>
+                </div>
+                <input
+                    class="input"
+                    type="text"
+                    id="input"
+                    placeholder="Imię i nazwisko"
+                    [attr.disabled]="isListOne ? true : null"
+                    formControlName="guestOne"
+                    (keyup)="handleIsPlayerChosen()"
+                >
+                <p
+                    *ngIf="samePlayers()"
+                    class="error"
+                >
+                    Wybrani tacy sami gracze!
+                </p>
+                <p
+                    class="info"
+                    [ngClass]="{'info--hidden': isListOne}"
+                >
+                    Uwaga- nie zostanie dodany do bazy!
+                </p>
+            </div>
+            <div class="block">
+                <div class="block_name">
+                    <p class="text">Gracz 2</p>
+                    <div class="line"></div>
+                </div>
+                <div class="radio">
+                    <input
+                        type="radio"
+                        name="listTwo"
+                        id="list-2"
+                        formControlName="listTwo"
+                        value="true"
+                        (change)="handleTypeChoseTwo()"
+                    >
+                    <label for="list-2">Wybierz z listy nr 2:</label>
+                </div>
+                <div class="block_input">
+                    <input
+                        type="hidden"
+                        formControlName="playerTwo"
+                    >
+                    <div
+                        *ngIf="getFormField('playerTwo')?.value"
+                        class="icon icon--phone"
+                        [ngClass]="{'icon--disabled': !isListOne}"
+                    >
+                        <a [href]="'tel:+48'+findPhone(getFormField('playerTwo')?.value)">
+                            <svg class="call">
+                                <use [attr.xlink:href]="environment.svg +'#icon-phone'"></use>
+                            </svg>
+                        </a>
+                        <a [href]="'sms:+48'+findPhone(getFormField('playerTwo')?.value)">
+                            <svg class="sms">
+                                <use [attr.xlink:href]="environment.svg +'#icon-sms'"></use>
+                            </svg>
+                        </a>
+                    </div>
+                    <svg
+                        [id]="isListTwo ? 'listTwoSvg' : ''"
+                        class="icon"
+                        [ngClass]="{'icon--disabled': !isListTwo}"
+                    >
+                        <use [attr.xlink:href]="environment.svg +'#icon-arrow-down'"></use>
+                    </svg>
+                    <input
+                        type="text"
+                        class="select"
+                        [ngClass]="{'select--chosen': filter.findPlayerById(getFormField('playerTwo')?.value, players)}"
+                        id="listTwo"
+                        autocomplete="off"
+                        formControlName="selectTwoValue"
+                        [placeholder]="'Wybrany: ' + filter.findPlayerById(getFormField('playerTwo')?.value, players)"
+                        [attr.disabled]="isListTwo ? null : true"
+                        (keydown.Enter)="handleKeyEnterTwo()"
+                        (keydown)="selectHandler.keyDown($event, 'two', playerOne.length)"
+                        (keyup)="handleReduceListTwo()"
+                        (focus)="selectHandler.focusIn('two')"
+                    >
+                    <ul
+                        class="list"
+                        [ngClass]="{'list--open': selectHandler.isTwoOpen}"
+                    >
+                        <li
+                            class="list_element"
+                            [ngClass]="{'list_element--active': selectHandler.indexTwo === 0}"
+                            (click)="handleSelectPlayerTwo('')"
+                            (pointerenter)="selectHandler.mouseEnter($event)"
+                            (pointerleave)="selectHandler.mouseLeave($event)"
+                        >
+                            --wyczyść wpis--
+                        </li>
+                        <li
+                            class="list_element"
+                            *ngFor="let player of filteredPlayerTwo; let i = index"
+                            [ngClass]="{'list_element--active': selectHandler.indexTwo === i+1}"
+                            (pointerenter)="selectHandler.mouseEnter($event)"
+                            (pointerleave)="selectHandler.mouseLeave($event)"
+                            (click)="handleSelectPlayerTwo(player.id!)"
+                        >
+                            {{player.name}} {{player.surname}}
+                        </li>
+                    </ul>
+                </div>
+                <div class="radio">
+                    <input
+                        type="radio"
+                        name="listTwo"
+                        id="input-2"
+                        value="false"
+                        formControlName="listTwo"
+                        (change)="handleTypeChoseTwo()"
+                    >
+                    <label for="input-2">lub wprowadź spoza bazy:</label>
+                </div>
+                <input
+                    class="input"
+                    type="text"
+                    id="input"
+                    placeholder="Imię i nazwisko"
+                    formControlName="guestTwo"
+                    [attr.disabled]="isListTwo ? true : null"
+                    (keyup)="handleIsPlayerChosen()"
+                >
+                <p
+                    *ngIf="samePlayers()"
+                    class="error"
+                >
+                    Wybrani tacy sami gracze!
+                </p>
+                <p
+                    class="info"
+                    [ngClass]="{'info--hidden': isListTwo}"
+                >
+                    Uwaga- nie zostanie dodany do bazy!
+                </p>
+            </div>
+            <div class="block block--wider">
+                <div class="block_name">
+                    <p class="text">Opcje wyszukania</p>
+                    <div class="line"></div>
+                </div>
+                <div class="row">
+                    <button
+                        type="button"
+                        class="btn btn--option btn--option"
+                        [ngClass]="{'btn--option--active': activeFilters.playerOne.isActive}"
+                        [attr.disabled]="(!isTimeChosen || activeFilters.playerOne.isDisabled) ? true : null"
+                        (click)="reducePlayerListToDateAndHours()"
+                    >
+                        Lista graczy zgodna z dniem i czasem
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn--option"
+                        [ngClass]="{'btn--option--active': activeFilters.allOpponentsOne.isActive}"
+                        [attr.disabled]="(!isTimeChosen || activeFilters.allOpponentsOne.isDisabled) ? true : null"
+                        (click)="findAllOpponentsOne()"
+                    >
+                        Skróć listę 2 do przeciwników 1
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn--option"
+                        [ngClass]="{'btn--option--active': activeFilters.allOpponentsTwo.isActive}"
+                        [attr.disabled]="(!isTimeChosen || activeFilters.allOpponentsTwo.isDisabled) ? true : null"
+                        (click)="findAllOpponentsTwo()"
+                    >
+                        Skróć listę 1 do przeciwników 2
+                    </button>
+                </div>
+            </div>
+            <div class="block">
+                <div class="block_name">
+                    <p class="text">Kort</p>
+                    <div class="line"></div>
+                </div>
+                <select
+                    class="select"
+                    formControlName="court"
+                >
+                    <option
+                        value
+                        disabled
+                        selected
+                    >
+                        Wybierz...
+                    </option>
+                    <option value="1">Niebieski</option>
+                    <option value="2">Fioletowy</option>
+                    <option value="3">Rezerwowy</option>
+                </select>
+            </div>
+            <div class="block block--add">
+                <button
+                    type="submit"
+                    class="btn btn--add"
+                    [disabled]="form.invalid || !isPlayerChosen || !isTimeCorrect || !isMinutesCorrect || !isTimeLongEnough || isSending || samePlayers()"
+                >
+                    Zapisz
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

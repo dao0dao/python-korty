@@ -1,0 +1,29 @@
+<div class="background">
+    <div class="container">
+        <p class="title">Usunąć wpis z historii?</p>
+        <p class="date">
+            {{payment?.serviceDate}}: {{payment?.serviceName}}
+        </p>
+        <p class="name">{{player?.name}} {{player?.surname}}</p>
+        <p class="price">
+            Cena:
+            <span>{{payment?.price}}PLN</span>
+        </p>
+        <div class="buttons">
+            <button
+                class="btn btn--delete"
+                type="button"
+                (click)="closeModal()"
+            >
+                Anuluj
+            </button>
+            <button
+                class="btn btn--add"
+                type="button"
+                (click)="deletePayment()"
+            >
+                Usuń
+            </button>
+        </div>
+    </div>
+</div>

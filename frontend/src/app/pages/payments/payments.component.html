@@ -1,0 +1,186 @@
+<div
+    *ngIf="!isLoadedServices || !isLoadedPlayers"
+    class="container"
+>
+    <app-loader></app-loader>
+</div>
+<div
+    *ngIf="isLoadedServices && isLoadedPlayers"
+    class="container"
+    (click)="selectHandler.toggleList($event)"
+>
+    <div class="header">
+        <p class="title">Usługi</p>
+        <button
+            *ngIf="loginService.state.isAdmin"
+            class="btn btn--edit"
+            (click)="openServiceList()"
+        >
+            <svg>
+                <use [attr.xlink:href]="environment.svg +'#icon-settings'"></use>
+            </svg>
+        </button>
+    </div>
+    <div class="field">
+        <input
+            type="text"
+            id="player"
+            [ngClass]="{'full': playerInput}"
+            [(ngModel)]="playerInput"
+            placeholder="Wybierz gracza"
+            (keydown)="selectHandler.keyDown($event, selectHandler.filteredPlayers.length)"
+            (keydown.enter)="selectPlayer()"
+            (keyup)="checkInput($event); selectHandler.findPlayer(playerInput, players)"
+        >
+        <ul
+            class="list"
+            [ngClass]="{'list--open': selectHandler.isOpen}"
+        >
+            <li
+                class="list_element"
+                [ngClass]="{'list_element--active' : selectHandler.activeIndex === 0}"
+                (click)="selectPlayerOnClick(null)"
+            >
+            </li>
+            <li
+                class="list_element"
+                [ngClass]="{'list_element--active' : selectHandler.activeIndex === i+1}"
+                *ngFor="let pl of selectHandler.filteredPlayers; let i = index"
+                (click)="selectPlayerOnClick(pl.id!)"
+            >
+                {{pl.name}} {{pl.surname}}
+            </li>
+        </ul>
+    </div>
+    <div class="actions">
+        <button
+            class="btn btn--sort"
+            [ngClass]="{'btn--sort-active': action === 'charge'}"
+            [attr.disabled]="!selectedPlayer ? true: null"
+            (click)="changeAction('charge')"
+        >
+            Zasilenie konta
+        </button>
+        <button
+            class="btn btn--sort"
+            [ngClass]="{'btn--sort-active': action === 'payments'}"
+            [attr.disabled]="!selectedPlayer ? true: null"
+            (click)="changeAction('payments')"
+        >
+            Obciążenie konta
+        </button>
+    </div>
+    <div
+        *ngIf="action === 'charge'"
+        class="block block--charge"
+    >
+        <div class="field">
+            <input
+                id="currency"
+                [ngClass]="{'full': inputCharge !== undefined}"
+                type="number"
+                step="0.01"
+                min="0"
+                [(ngModel)]="inputCharge"
+                (keyup)="checkCharge()"
+            >
+            <label for="currency">Kwota w PLN</label>
+        </div>
+        <button
+            class="btn btn--add"
+            [attr.disabled]="(this.inputCharge > 0) ? null : true"
+            (click)="chargeAccount()"
+        >
+            Doładuj
+        </button>
+    </div>
+    <div
+        *ngIf="action === 'payments'"
+        class="block block--payments"
+    >
+        <div class="field">
+            <select
+                [(ngModel)]="selectService"
+                (change)="changeService()"
+            >
+                <option
+                    selected
+                    [value]="''"
+                >
+                    Wybierz usługę
+                </option>
+                <option
+                    *ngFor="let serv of services"
+                    [value]="serv.name"
+                >
+                    {{serv.name}}
+                </option>
+            </select>
+        </div>
+        <div class="field">
+            <input
+                id="price"
+                type="number"
+                step="0.01"
+                min="0"
+                [ngClass]="{'full': (inputService !== undefined && inputService !== null)}"
+                [(ngModel)]="inputService"
+            >
+            <label for="price">Cena:</label>
+        </div>
+        <div class="methods">
+            <div class="radio">
+                <input
+                    type="radio"
+                    name="method"
+                    id="cash"
+                    value="cash"
+                    [(ngModel)]="paymentMethod"
+                >
+                <label for="cash">Gotówka</label>
+            </div>
+            <div class="radio">
+                <input
+                    type="radio"
+                    name="method"
+                    id="transfer"
+                    value="transfer"
+                    [(ngModel)]="paymentMethod"
+                >
+                <label for="transfer">Przelew</label>
+            </div>
+            <div class="radio">
+                <input
+                    type="radio"
+                    name="method"
+                    id="payment"
+                    value="payment"
+                    [(ngModel)]="paymentMethod"
+                >
+                <label for="payment">Pobierz z konta</label>
+            </div>
+            <div class="radio">
+                <input
+                    type="radio"
+                    name="method"
+                    id="debet"
+                    value="debet"
+                    [(ngModel)]="paymentMethod"
+                >
+                <label for="debet">Nie pobrano opłaty</label>
+            </div>
+        </div>
+        <button
+            class="btn btn--add"
+            [attr.disabled]="(inputService !== undefined && inputService !== null && paymentMethod !== undefined) ? null: true"
+            (click)="getPaymentForService()"
+        >
+            Wykonaj
+        </button>
+    </div>
+    <app-service-list
+        *ngIf="isServiceList"
+        [services]="services"
+        (outputCloseServiceList)="closeServiceList()"
+    ></app-service-list>
+</div>

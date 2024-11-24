@@ -1,0 +1,249 @@
+@use "@angular/material" as mat;
+@include mat.core();
+$front-primary: mat.define-palette(mat.$indigo-palette);
+$front-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$front-warn: mat.define-palette(mat.$red-palette);
+$front-theme: mat.define-light-theme(
+    (
+        color: (
+            primary: $front-primary,
+            accent: $front-accent,
+            warn: $front-warn,
+        ),
+    )
+);
+@include mat.all-component-themes($front-theme);
+@import "~src/assets/colors";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 300;
+    letter-spacing: 2px;
+    scrollbar-width: thin;
+    scrollbar-color: $mainColorOne $background;
+    &::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+        background-color: $background;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: $mainColorOne;
+    }
+}
+button {
+    cursor: pointer;
+}
+body {
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+}
+
+.btn {
+    position: relative;
+    display: inline-block;
+    margin: 0.5rem 1rem;
+    padding: 0.5rem 0.8rem;
+    background-color: transparent;
+    border: unset;
+    border-bottom: 2px solid transparent;
+    font-size: 1rem;
+    text-decoration: none;
+    color: $white;
+    transition: border-color 0.25s linear;
+    cursor: pointer;
+    &::after:not(.btn--option) {
+        position: absolute;
+        top: 0;
+        width: 2px;
+        height: 100%;
+        display: block;
+        content: "";
+        background-color: $mainColorOne;
+        opacity: 0;
+        transition: opacity 0.25s linear, background-color 0.25s linear;
+    }
+    &--left {
+        &::after {
+            left: 0;
+            transform: rotate(13deg) translate(2px, 2px);
+        }
+    }
+    &--right {
+        &::after {
+            right: 0;
+            transform: rotate(-13deg) translate(-2px, 2px);
+        }
+    }
+    &--submit,
+    &--close,
+    &--add,
+    &--edit,
+    &--delete {
+        &::after,
+        &::before {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 50%;
+            transform: skewX(-16deg);
+            opacity: 1;
+            display: block;
+            content: "";
+            background-color: transparent;
+
+            border-style: solid;
+            transition: width 0.25s linear;
+        }
+        &::after {
+            left: -2px;
+            border-width: 0 0 2px 2px;
+        }
+        &::before {
+            right: -2px;
+            border-width: 2px 2px 0 0;
+        }
+    }
+    &--submit {
+        color: $mainColorTwo;
+        &::after,
+        &::before {
+            border-color: $mainColorOne;
+        }
+    }
+    &--option {
+        font-size: 0.8em;
+        color: $mainColorTwo;
+        border-color: $confirm;
+        border-style: solid;
+        border-width: 0 0 1px;
+        box-shadow: $mainShadow;
+        transition: background-color 0.25s ease-in-out, color 0.25s ease-in-out;
+        &--active {
+            background-color: $confirm;
+            color: $clearWhite;
+        }
+    }
+    &--add,
+    &--edit,
+    &--delete {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.8em;
+        color: $black;
+        svg {
+            width: 17px;
+            max-height: 17px;
+            position: static;
+            margin-right: 5px;
+            fill: $confirm;
+        }
+    }
+    &--add {
+        &::after,
+        &::before {
+            border-color: $confirm;
+        }
+    }
+    &--edit {
+        svg {
+            fill: $yellow;
+        }
+        &::after,
+        &::before {
+            border-color: $yellow;
+        }
+    }
+    &--delete {
+        svg {
+            fill: $mainColorOne;
+        }
+        &::after,
+        &::before {
+            border-color: $mainColorOne;
+        }
+    }
+    &--close {
+        color: $mainColorThree;
+        &::after,
+        &::before {
+            border-color: $mainColorThree;
+        }
+    }
+    &--active,
+    &:hover,
+    &:focus-visible {
+        outline: none;
+        &::after {
+            opacity: 1;
+        }
+        border-color: $mainColorOne;
+        &.btn--submit,
+        &.btn--close,
+        &.btn--add,
+        &.btn--edit,
+        &.btn--delete {
+            border-color: transparent;
+            &::after,
+            &::before {
+                width: 100%;
+            }
+        }
+        &.btn--option {
+            box-shadow: $mainOptionShadow;
+            border-color: $confirm;
+        }
+    }
+    &[disabled] {
+        border-color: $mainColorFour;
+        color: $mainColorFour;
+        pointer-events: none;
+        &::after {
+            background-color: $mainColorFour;
+        }
+        &.btn--submit,
+        &.btn--add,
+        &.btn--edit,
+        &.btn--delete {
+            border-color: transparent;
+            pointer-events: none;
+            &::after,
+            &::before {
+                background-color: transparent;
+                border-color: $mainColorFour;
+            }
+        }
+        &.btn--add,
+        &.btn--edit,
+        &.btn--delete {
+            svg {
+                fill: $mainColorFour;
+            }
+        }
+        &.btn--option {
+            border-color: $mainColorFour;
+            background-color: $mainColorFour;
+            color: $clearWhite;
+            cursor: auto;
+        }
+    }
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+html,
+body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}

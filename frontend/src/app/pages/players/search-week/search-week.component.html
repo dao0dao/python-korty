@@ -1,0 +1,132 @@
+<form
+    class="form"
+    [formGroup]="formDay"
+    (change)="emitSearch()"
+>
+    <div class="day">
+        <input
+            type="checkbox"
+            id="s_mon"
+            formControlName="s0"
+        >
+        <label for="s_mon">
+            <svg class="checked">
+                <use [attr.xlink:href]="environment.svg +'#icon-checked'"></use>
+            </svg>
+            <svg>
+                <use [attr.xlink:href]="environment.svg +'#icon-checkbox'"></use>
+            </svg>
+            Pn.
+        </label>
+    </div>
+    <div class="day">
+        <input
+            type="checkbox"
+            id="s_tue"
+            formControlName="s1"
+        >
+        <label for="s_tue">
+            <svg class="checked">
+                <use [attr.xlink:href]="environment.svg +'#icon-checked'"></use>
+            </svg>
+            <svg>
+                <use [attr.xlink:href]="environment.svg +'#icon-checkbox'"></use>
+            </svg>
+            Wt.
+        </label>
+    </div>
+    <div class="day">
+        <input
+            type="checkbox"
+            id="s_wen"
+            formControlName="s2"
+        >
+        <label for="s_wen">
+            <svg class="checked">
+                <use [attr.xlink:href]="environment.svg +'#icon-checked'"></use>
+            </svg>
+            <svg>
+                <use [attr.xlink:href]="environment.svg +'#icon-checkbox'"></use>
+            </svg>
+            Śr.
+        </label>
+    </div>
+    <div class="day">
+        <input
+            type="checkbox"
+            id="s_thu"
+            formControlName="s3"
+        >
+        <label for="s_thu">
+            Cz.
+            <svg class="checked">
+                <use [attr.xlink:href]="environment.svg +'#icon-checked'"></use>
+            </svg>
+            <svg>
+                <use [attr.xlink:href]="environment.svg +'#icon-checkbox'"></use>
+            </svg>
+        </label>
+    </div>
+    <div class="day">
+        <input
+            type="checkbox"
+            id="s_fri"
+            formControlName="s4"
+        >
+        <label for="s_fri">
+            <svg class="checked">
+                <use [attr.xlink:href]="environment.svg +'#icon-checked'"></use>
+            </svg>
+            <svg>
+                <use [attr.xlink:href]="environment.svg +'#icon-checkbox'"></use>
+            </svg>
+            Pt.
+        </label>
+    </div>
+    <div class="day">
+        <input
+            type="checkbox"
+            id="s_sat"
+            formControlName="s5"
+        >
+        <label for="s_sat">
+            <svg class="checked">
+                <use [attr.xlink:href]="environment.svg +'#icon-checked'"></use>
+            </svg>
+            <svg>
+                <use [attr.xlink:href]="environment.svg +'#icon-checkbox'"></use>
+            </svg>
+            Sb.
+        </label>
+    </div>
+    <div class="day">
+        <input
+            type="checkbox"
+            id="s_sun"
+            formControlName="s6"
+        >
+        <label for="s_sun">
+            <svg class="checked">
+                <use [attr.xlink:href]="environment.svg +'#icon-checked'"></use>
+            </svg>
+            <svg>
+                <use [attr.xlink:href]="environment.svg +'#icon-checkbox'"></use>
+            </svg>
+            Nd.
+        </label>
+    </div>
+    <div class="hour">
+        <span>od</span>
+        <input
+            type="time"
+            class="time"
+            formControlName="sFrom"
+        >
+        <span>do</span>
+        <input
+            type="time"
+            class="time"
+            formControlName="sTo"
+        >
+    </div>
+</form>

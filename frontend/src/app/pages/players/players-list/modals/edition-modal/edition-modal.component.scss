@@ -1,0 +1,179 @@
+@import "~src/assets/colors";
+.background {
+    position: fixed;
+    z-index: 3;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $background;
+}
+.form {
+    overflow: auto;
+    position: relative;
+    max-height: 100%;
+    max-width: 100%;
+    padding: 25px 10px 10px;
+    border-radius: $mainBorderRadius;
+    background-color: white;
+    .title {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translate(-50%);
+        width: max-content;
+        font-weight: 700;
+        color: $mainColorOne;
+        span {
+            font-weight: 400;
+            font-size: 0.8rem;
+            color: $mainColorTwo;
+        }
+    }
+    .category {
+        &_block {
+            margin: 1rem;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            .text {
+                margin-right: 0.5rem;
+                font-size: 0.7em;
+                color: $mainColorFour;
+            }
+            .line {
+                height: 1px;
+                flex-grow: 1;
+                background-color: $background;
+            }
+        }
+        &_field {
+            position: relative;
+            width: min-content;
+            margin: 2rem auto 0;
+            label {
+                position: absolute;
+                top: 50%;
+                left: -7px;
+                margin: 0 0.5rem;
+                transform: translateY(-50%);
+                transition: transform 0.3s ease-in-out;
+                font-size: 0.8rem;
+                text-align: right;
+                letter-spacing: 1px;
+                &.top {
+                    top: 10px;
+                    left: -5px;
+                }
+            }
+            input,
+            .input {
+                padding: 5px 10px;
+                border-width: 0 0px 1px 0px;
+                border-style: solid;
+                border-color: $mainColorThree;
+                outline: unset;
+                transition: border-color 0.3s ease-in-out;
+                &:focus-within,
+                &:hover,
+                &.full {
+                    border-color: $mainColorOne;
+                }
+            }
+            input {
+                width: 160px;
+                &:hover + label,
+                &:focus-within + label,
+                &.full + label {
+                    transform: translate(-101%, -50%);
+                }
+            }
+            .input {
+                width: 15rem;
+                height: 5rem;
+                resize: none;
+                padding: 5px;
+                border-radius: 5px;
+                border: 1px solid $mainColorTwo;
+                font-size: 0.8em;
+                &--short {
+                    height: 2.5rem;
+                }
+                &:focus {
+                    border-color: $mainColorOne;
+                    outline: none;
+                }
+                &:hover + label,
+                &:focus-within + label,
+                &.full + label {
+                    transform: translate(0%, -180%);
+                }
+            }
+            .select {
+                width: 160px;
+                padding: 0.5rem;
+                border-style: none none solid;
+                border-color: $mainColorTwo;
+                border-width: 1px;
+                background-color: transparent;
+                &:focus-within {
+                    outline: none;
+                    border-color: $mainColorOne;
+                }
+            }
+            .error {
+                position: absolute;
+                left: 0;
+                top: 100%;
+                font-size: 0.5rem;
+                color: $mainColorOne;
+            }
+            .notes {
+                width: 15rem;
+                height: 5rem;
+                resize: none;
+                padding: 5px;
+                border-radius: 5px;
+                border: 1px solid $mainColorTwo;
+                font-size: 0.8em;
+                &:focus {
+                    border-color: $mainColorOne;
+                    outline: none;
+                }
+            }
+        }
+    }
+    .submit {
+        flex-basis: 100%;
+        .btn {
+            display: block;
+            margin: 1rem auto;
+        }
+    }
+}
+@media screen and (min-width: 992px) {
+    .form {
+        width: 100vw;
+        max-width: 1200px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: flex-start;
+        .category {
+            min-width: 300px;
+            flex-basis: 30%;
+            margin: 0 1rem;
+        }
+        .submit {
+            text-align: center;
+            .btn {
+                display: inline-block;
+                margin: 1rem 5rem;
+            }
+        }
+    }
+}

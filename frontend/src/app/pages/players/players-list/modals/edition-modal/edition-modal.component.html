@@ -1,0 +1,229 @@
+<div class="background">
+    <form
+        class="form"
+        [formGroup]="formAddPlayer"
+        (ngSubmit)="submit()"
+    >
+        <div class="title">
+            <span *ngIf="viewMode !== 'view'">edycja gracza</span>
+            {{title}}
+        </div>
+        <div class="category">
+            <div class="category_block">
+                <p class="text">Dane osobowe</p>
+                <div class="line"></div>
+            </div>
+            <div class="category_field">
+                <input
+                    type="text"
+                    id="name"
+                    formControlName="name"
+                    [ngClass]="{'full': getField('name')?.value}"
+                >
+                <label for="name">Imię</label>
+                <div class="error">
+                    <p *ngIf="(getField('name')?.invalid && getField('name')?.touched) || errors.name">Min 2, max 15 znaków</p>
+                </div>
+            </div>
+            <div class="category_field">
+                <input
+                    type="text"
+                    id="surname"
+                    formControlName="surname"
+                    [ngClass]="{'full': getField('surname')?.value}"
+                >
+                <label for="surname">Nazwisko</label>
+                <div class="error">
+                    <p *ngIf="(getField('surname')?.invalid && getField('surname')?.touched) || errors.surname">Min 2, max 30 znaków</p>
+                </div>
+            </div>
+            <div class="category_field">
+                <input
+                    type="text"
+                    id="telephone"
+                    formControlName="telephone"
+                    [ngClass]="{'full': getField('telephone')?.value}"
+                >
+                <label for="tel">Telefon</label>
+                <div class="error">
+                    <p *ngIf="(getField('telephone')?.invalid && getField('telephone')?.touched) || errors.telephone">Tylko 9 cyfr</p>
+                </div>
+            </div>
+            <div class="category_field">
+                <input
+                    type="text"
+                    id="email"
+                    formControlName="email"
+                    [ngClass]="{'full': getField('email')?.value}"
+                >
+                <label for="email">Email</label>
+                <div class="error">
+                    <p *ngIf="(getField('email')?.invalid && getField('email')?.touched) || errors.email">Nieprawidłowy email</p>
+                </div>
+            </div>
+        </div>
+        <div class="category">
+            <div class="category_block">
+                <p class="text">Kort</p>
+                <div class="line"></div>
+            </div>
+            <div class="category_field">
+                <select
+                    class="select"
+                    formControlName="priceListId"
+                >
+                    <option
+                        value
+                        selected
+                        id="priceListId"
+                    >
+                        Wybierz cennik
+                    </option>
+                    <option
+                        *ngFor="let price of priceList"
+                        [value]="price.id"
+                    >
+                        {{price.name}}
+                    </option>
+                </select>
+                <div class="error">
+                    <p *ngIf="errors.priceListId">Niewłaściwy cennik</p>
+                </div>
+            </div>
+            <div class="category_field">
+                <select
+                    id="court"
+                    class="select"
+                    formControlName="court"
+                >
+                    <option
+                        value="0"
+                        selected="selected"
+                    >
+                        Ulubiony kort
+                    </option>
+                    <option value="1">Niebieski</option>
+                    <option value="2">Fioletowy</option>
+                </select>
+                <div class="error">
+                    <p *ngIf="errors.court">Niewłaściwa wartość</p>
+                </div>
+            </div>
+        </div>
+        <div class="category">
+            <div class="category_block">
+                <p class="text">Sprzęt</p>
+                <div class="line"></div>
+            </div>
+            <div class="category_field">
+                <textarea
+                    id="stringsName"
+                    class="input"
+                    formControlName="stringsName"
+                    [ngClass]="{'full': getField('stringsName')?.value}"
+                ></textarea>
+                <label
+                    class="top"
+                    for="stringsName"
+                >
+                    Ulubiony naciąg
+                </label>
+                <div class="error">
+                    <p *ngIf="(getField('stringsName')?.invalid && getField('stringsName')?.touched) || errors.stringsName">Max 250 znaków</p>
+                </div>
+            </div>
+            <div class="category_field">
+                <textarea
+                    id="tension"
+                    class="input"
+                    formControlName="tension"
+                    [ngClass]="{'full': getField('tension')?.value}"
+                ></textarea>
+                <label
+                    class="top"
+                    for="tension"
+                >
+                    Siła naciągu
+                </label>
+                <div class="error">
+                    <p *ngIf="(getField('tension')?.invalid && getField('tension')?.touched) || errors.tension">Max 250 znaków</p>
+                </div>
+            </div>
+            <div class="category_field">
+                <textarea
+                    type="text"
+                    id="balls"
+                    class="input input--short"
+                    formControlName="balls"
+                    [ngClass]="{'full': getField('balls')?.value}"
+                ></textarea>
+                <label
+                    class="top"
+                    for="balls"
+                >
+                    Ulubione piłki
+                </label>
+                <div class="error">
+                    <p *ngIf="(getField('balls')?.invalid && getField('balls')?.touched) || errors.balls">Max 150 znaków</p>
+                </div>
+            </div>
+        </div>
+        <div class="category">
+
+            <div class="category_block">
+                <p class="text">Preferowane terminy</p>
+                <div class="line"></div>
+            </div>
+            <app-week
+                (outputWeeks)="setWeeks($event)"
+                [editedWeeks]="player.weeks"
+                [isView]="viewMode === 'view'"
+            ></app-week>
+        </div>
+        <div class="category">
+            <div class="category_block">
+                <p class="text">Preferowani przeciwnicy</p>
+                <div class="line"></div>
+            </div>
+            <app-opponent
+                (outputOpponents)="setOpponents($event)"
+                [allPayers]="allPlayers"
+                [chosenOpponents]="player.opponents"
+                [playerId]="player.id!"
+                [isView]="viewMode === 'view'"
+            ></app-opponent>
+        </div>
+        <div class="category">
+            <div class="category_block">
+                <p class="text">Notatka</p>
+                <div class="line"></div>
+            </div>
+            <div class="category_field">
+                <textarea
+                    class="notes"
+                    formControlName="notes"
+                ></textarea>
+                <div class="error">
+                    <p *ngIf="(getField('notes')?.invalid && getField('notes')?.touched) || errors.notes">Max 500 znaków</p>
+                </div>
+            </div>
+        </div>
+        <div class="submit">
+            <button
+                class="btn btn--close"
+                type="button"
+                (click)="closeModal()"
+            >
+                Zamknij
+            </button>
+            <button
+                *ngIf="viewMode !== 'view'"
+                class="btn btn--submit"
+                type="submit"
+                [disabled]="formAddPlayer.invalid"
+            >
+                Zapisz
+            </button>
+        </div>
+    </form>
+</div>

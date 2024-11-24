@@ -1,0 +1,71 @@
+<div class="background">
+    <div class="container">
+        <p class="title">Pobierz opłatę za:</p>
+        <p class="date">
+            {{payment?.serviceDate}}: {{payment?.serviceName}}
+        </p>
+        <p class="name">{{player?.name}} {{player?.surname}}</p>
+        <p class="price">
+            Koszt:
+            <input
+                *ngIf="loginState.state.isLogin"
+                type="number"
+                id="price"
+                [(ngModel)]="price"
+            >
+            <span *ngIf="loginState.state.isLogin">PLN</span>
+            <span *ngIf="!loginState.state.isLogin">{{payment?.price}}PLN</span>
+        </p>
+        <p class="method">Forma płatności:</p>
+        <div class="inputs">
+            <div class="radio">
+                <input
+                    type="radio"
+                    name="method"
+                    id="cash"
+                    value="cash"
+                    [(ngModel)]="paymentMethod"
+                >
+                <label for="cash">gotówka</label>
+            </div>
+            <div class="radio">
+                <input
+                    type="radio"
+                    name="method"
+                    id="transfer"
+                    value="transfer"
+                    [(ngModel)]="paymentMethod"
+                >
+                <label for="transfer">przelew</label>
+            </div>
+            <div class="radio">
+                <input
+                    type="radio"
+                    name="method"
+                    id="payment"
+                    value="payment"
+                    [(ngModel)]="paymentMethod"
+                >
+                <label for="payment">pobranie z konta</label>
+            </div>
+        </div>
+        <div class="buttons">
+            <button
+                class="btn btn--delete"
+                type="button"
+                [disabled]="isSubmitting"
+                (click)="closeModal()"
+            >
+                Anuluj
+            </button>
+            <button
+                class="btn btn--add"
+                type="button"
+                [disabled]="isSubmitting"
+                (click)="acceptPayment()"
+            >
+                Zapłać
+            </button>
+        </div>
+    </div>
+</div>

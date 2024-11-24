@@ -1,0 +1,40 @@
+<div
+    *ngIf="isLoading"
+    class="loader"
+>
+    <app-loader></app-loader>
+</div>
+<div class="container">
+    <div
+        *ngIf="stateService.state.isAdmin"
+        class="overlap"
+    >
+        <button
+            class="btn btn--left"
+            [ngClass]="{'btn--active': overlap === 'list'}"
+            (click)="changeOverlap('list')"
+        >
+            Lista graczy
+        </button>
+        <button
+            class="btn btn--right"
+            [ngClass]="{'btn--active': overlap === 'add'}"
+            (click)="changeOverlap('add')"
+        >
+            Dodaj gracza
+        </button>
+    </div>
+    <app-add-player
+        *ngIf="overlap === 'add'"
+        [allPlayers]="players"
+        [priceList]="priceList"
+        (outputRefreshList)="reloadPlayers()"
+    ></app-add-player>
+    <app-players-list
+        *ngIf="overlap === 'list'"
+        [inputPlayers]="players"
+        [inputPriceList]="priceList"
+        [inputAllOpponents]="allOpponents"
+        (outputUpdateUser)="reloadPlayers()"
+    ></app-players-list>
+</div>

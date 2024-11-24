@@ -1,0 +1,59 @@
+@import "~src/assets/colors";
+
+.square {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    .circle {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        border-width: 8px;
+        border-style: solid;
+        &--outside {
+            width: 100%;
+            height: 100%;
+            border-color: $mainColorOne $mainColorOne transparent transparent;
+            animation: RotationRight 2.5s linear infinite;
+        }
+        &--middle {
+            width: 70%;
+            height: 70%;
+            border-color: transparent transparent $mainColorTwo $mainColorTwo;
+            animation: RotationLeft 2s linear infinite;
+        }
+        &--inside {
+            width: 40%;
+            height: 40%;
+            border-color: transparent $mainColorThree $mainColorThree transparent;
+            animation: RotationCenter 1.5s linear infinite;
+        }
+    }
+}
+
+@keyframes RotationRight {
+    0% {
+        transform: translate(-50%, -50%) rotateX(0deg) rotateY(0) rotate(0);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotateX(-360deg) rotateY(360deg) rotate(-360deg);
+    }
+}
+@keyframes RotationLeft {
+    0% {
+        transform: translate(-50%, -50%) rotateX(360deg) rotateY(-360deg) rotate(360deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotateX(0deg) rotateY(0deg) rotate(0);
+    }
+}
+@keyframes RotationCenter {
+    0% {
+        transform: translate(-50%, -50%) rotateX(-360deg) rotateY(360deg) rotate(-360deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotateX(0deg) rotateY(0) rotate(0);
+    }
+}

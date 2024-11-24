@@ -1,0 +1,76 @@
+@import "~src/assets/colors";
+.container {
+    position: fixed;
+    z-index: 3;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $background;
+}
+.modal {
+    width: 95%;
+    height: 95%;
+    max-width: 400px;
+    max-height: 300px;
+    padding: 15px;
+    border-radius: $mainBorderRadius;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: $clearWhite;
+    text-align: center;
+}
+.title {
+    margin-top: 1rem;
+    font-size: 20px;
+}
+.subtitle {
+    margin-top: 1rem;
+    font-weight: 700;
+}
+.actions {
+    width: 100%;
+    margin-top: auto;
+    display: flex;
+    justify-content: space-around;
+}
+
+.popUp {
+    &--delete {
+        border-radius: $mainBorderRadius;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: stretch;
+        text-align: center;
+        .title {
+            color: $mainColorOne;
+            font-weight: 700;
+        }
+        .actions {
+            margin-top: auto;
+            .btn {
+                margin: 2.5rem;
+                display: inline-block;
+                &--submit {
+                    color: $mainColorOne;
+                }
+            }
+        }
+    }
+}
+@media screen and (min-width: 992px) {
+    .popUp {
+        &_card {
+            &--delete {
+                max-width: 400px;
+                max-height: 300px;
+            }
+        }
+    }
+}

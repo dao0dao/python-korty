@@ -1,0 +1,56 @@
+@import "~src/assets/colors";
+
+.form {
+    text-align: center;
+    .select {
+        padding: 0.5rem;
+        border-style: none none solid;
+        border-color: $mainColorTwo;
+        border-width: 1px;
+        background-color: transparent;
+        &:focus-within,
+        &:focus {
+            outline: none;
+            border-color: $mainColorOne;
+        }
+    }
+    .btn {
+        margin: 1rem auto;
+        padding: 5px;
+    }
+}
+.block {
+    margin: 1rem 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8em;
+    .number {
+        flex-basis: 50px;
+        margin-right: 1rem;
+        padding: 0 10px;
+        text-align: right;
+    }
+    .name {
+        margin: 0 auto;
+    }
+    button {
+        margin-left: 1rem;
+        border: none;
+        background-color: transparent;
+        svg {
+            max-width: 25px;
+            max-height: 25px;
+            fill: #bb1616;
+        }
+    }
+}
+.error {
+    text-align: center;
+    color: $mainColorOne;
+}
+@media screen and (min-width: 992px) {
+    .block {
+        margin: 1rem 3rem;
+    }
+}

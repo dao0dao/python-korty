@@ -1,0 +1,114 @@
+@import "~src/assets/colors";
+
+.form {
+    margin: 0 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    .day {
+        position: relative;
+        margin: 0.5rem 5px;
+    }
+    label {
+        padding-left: 15px;
+        font-size: 0.8em;
+        svg {
+            position: absolute;
+            top: 0;
+            left: 3px;
+            max-width: 17px;
+            max-height: 17px;
+            fill: $black;
+        }
+    }
+    input[type="checkbox"] {
+        width: 0;
+        height: 0;
+        opacity: 0;
+        & + label {
+            border-bottom: 1px solid transparent;
+            border-right: 1px solid transparent;
+        }
+        & + label svg.checked {
+            opacity: 0;
+        }
+
+        &:checked + label svg {
+            opacity: 1;
+            fill: $mainColorOne;
+        }
+        &:focus-within + label,
+        &:focus + label {
+            border-bottom: 1px solid $mainColorOne;
+            border-right: 1px solid $mainColorOne;
+        }
+    }
+    .hour {
+        flex-basis: 100%;
+        text-align: center;
+        font-size: 0.8em;
+        .time {
+            margin: 5px;
+            border-style: none none solid;
+            border-color: $black;
+            border-width: 1px;
+            &:focus-within {
+                outline: none;
+                border-color: $mainColorOne;
+            }
+        }
+    }
+    .btn--add {
+        margin-top: 1rem;
+        padding: 5px;
+    }
+}
+.error {
+    text-align: center;
+    color: $mainColorOne;
+}
+.list {
+    margin: 1rem 1rem 1.5rem;
+    .week {
+        margin: 1rem 0;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        font-size: 0.8em;
+        .block {
+            flex-grow: 1;
+            margin-right: 20px;
+        }
+        .index {
+            flex-basis: 50px;
+            padding: 0 10px;
+            text-align: right;
+        }
+        .days {
+            text-align: center;
+            .day {
+                margin-right: 5px;
+                font-weight: 700;
+            }
+        }
+        .hour {
+            margin-top: 5px;
+            text-align: center;
+            span {
+                font-weight: 700;
+                margin: 0 5px;
+            }
+        }
+        button {
+            margin-left: auto;
+            border: unset;
+            background-color: transparent;
+            svg {
+                max-width: 25px;
+                max-height: 25px;
+                fill: $mainColorOne;
+            }
+        }
+    }
+}

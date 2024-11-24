@@ -1,0 +1,93 @@
+<div class="container">
+    <div class="header">
+        <p class="title">Dłużnicy</p>
+    </div>
+    <div class="action">
+        <div
+            class="btn btn--add"
+            (click)="getDebtors()"
+        >
+            Pokaż listę dłużników
+        </div>
+    </div>
+    <app-loader *ngIf="isLoading"></app-loader>
+    <p
+        *ngIf="noData"
+        class="noData"
+    >
+        Brak wpisów
+    </p>
+    <div
+        *ngIf="debtors.length"
+        class="table"
+    >
+        <table>
+            <tbody>
+                <tr *ngFor="let pl of debtors; let i = index">
+                    <td>#{{i+1}}</td>
+                    <td>{{pl.name}} {{pl.surname}}</td>
+                    <td class="red">{{pl.wallet}}PLN</td>
+                    <td>
+                        <button
+                            class="btn btn--edit"
+                            type="button"
+                            (click)="openPopUp(pl)"
+                        >
+                            <svg>
+                                <use [attr.xlink:href]="environment.svg +'#icon-info'"></use>
+                            </svg>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- info pop up -->
+<div
+    *ngIf="isPopUp"
+    class="popUp popUp_background"
+>
+    <div class="popUp_container">
+        <button
+            type="button"
+            class="btnX"
+            (click)="closePopUp()"
+        >
+            <svg>
+                <use [attr.xlink:href]="environment.svg +'#icon-close'"></use>
+            </svg>
+        </button>
+        <p class="popUp_name">{{debtor?.name}} {{debtor?.surname}}</p>
+        <p class="popUp_email">
+            email:
+            <span>{{debtor?.email}}</span>
+        </p>
+        <p class="popUp_phone">
+            tel:
+            <span>{{debtor?.telephone}}</span>
+        </p>
+        <p class="popUp_debet">
+            Stan konta:
+            <span>{{debtor?.wallet}}PLN</span>
+        </p>
+        <div class="popUp_contact">
+            <a
+                class="btn btn--add btn--sms"
+                [href]="'sms:+48'+debtor?.telephone"
+            >
+                <svg>
+                    <use [attr.xlink:href]="environment.svg +'#icon-sms'"></use>
+                </svg>
+            </a>
+            <a
+                class="btn btn--add btn--phone"
+                [href]="'tel:+48'+debtor?.telephone"
+            >
+                <svg>
+                    <use [attr.xlink:href]="environment.svg +'#icon-phone'"></use>
+                </svg>
+            </a>
+        </div>
+    </div>
+</div>

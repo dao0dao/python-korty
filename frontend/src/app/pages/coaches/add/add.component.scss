@@ -1,0 +1,73 @@
+@import "~src/assets/colors";
+
+.form {
+    margin-left: 1.2rem;
+    .field {
+        position: relative;
+        margin: 2rem 1rem;
+        label {
+            position: absolute;
+            top: 50%;
+            left: -7px;
+            margin: 0 0.5rem;
+            transform: translateY(-50%);
+            transition: transform 0.3s ease-in-out;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-align: right;
+            letter-spacing: 1px;
+        }
+        input {
+            width: 160px;
+            padding: 5px 10px;
+            border-width: 0 0px 1px 0px;
+            border-style: solid;
+            border-color: $mainColorThree;
+            outline: unset;
+            transition: border-color 0.3s ease-in-out;
+            &:focus-within,
+            &:hover,
+            &.full {
+                border-color: $mainColorOne;
+            }
+            &:hover + label,
+            &:focus-within + label,
+            &.full + label {
+                transform: translate(-101%, -50%);
+            }
+        }
+        .error {
+            position: absolute;
+            left: 0;
+            top: 100%;
+            font-size: 0.5rem;
+            color: $mainColorOne;
+        }
+    }
+    .btn {
+        margin-top: 1.5rem;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+    .btn:not([disabled]) {
+        color: $black;
+    }
+}
+@media screen and (min-width: 992px) {
+    .form {
+        margin-left: 0;
+        .field {
+            margin: 3rem auto;
+            label {
+                letter-spacing: 2px;
+            }
+            input {
+                width: 300px;
+            }
+            .error {
+                font-size: 0.8rem;
+            }
+        }
+    }
+}

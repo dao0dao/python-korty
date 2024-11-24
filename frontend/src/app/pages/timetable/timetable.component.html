@@ -1,0 +1,298 @@
+<div class="container">
+    <app-loader *ngIf="!isLoaded"></app-loader>
+    <div
+        *ngIf="isLoaded"
+        class="date"
+    >
+        <button
+            class="btn btn--add"
+            (click)="newReservation()"
+        >
+            Dodaj wpis
+        </button>
+        <div class="day">
+            <button
+                class="day_btn"
+                (click)="prevDay()"
+            >
+                <svg>
+                    <use [attr.xlink:href]="environment.svg +'#icon-arrow-left'"></use>
+                </svg>
+            </button>
+            <input
+                type="date"
+                name
+                id="day"
+                [(ngModel)]="date"
+                (change)="reloadReservations()"
+            >
+            <button
+                class="day_btn"
+                (click)="today()"
+            >
+                <svg>
+                    <use [attr.xlink:href]="environment.svg +'#icon-calendar-today'"></use>
+                </svg>
+            </button>
+            <button
+                class="day_btn"
+                (click)="nextDay()"
+            >
+                <svg>
+                    <use [attr.xlink:href]="environment.svg +'#icon-arrow-right'"></use>
+                </svg>
+            </button>
+        </div>
+        <div class="zoom">
+            <svg>
+                <use [attr.xlink:href]="environment.svg +'#icon-zoom-2'"></use>
+            </svg>
+            <input
+                type="number"
+                min="10"
+                max="100"
+                step="10"
+                id="zoom"
+                [(ngModel)]="zoom"
+                (ngModelChange)="handleZoomScroll()"
+            >
+            <label for="zoom">%</label>
+            <input
+                type="range"
+                min="10"
+                max="100"
+                step="10"
+                [(ngModel)]="zoom"
+                (ngModelChange)="handleZoomScroll()"
+            >
+        </div>
+    </div>
+    <div
+        #board
+        class="scroll"
+    >
+        <div
+            *ngIf="isLoaded"
+            class="timetable"
+            [ngStyle]="{'transform': 'scaleY(' + (zoom/100) + ')'}"
+        >
+            <div class="timetable_hours">
+                <div class="row row--first">
+                    <p>Godz.</p>
+                </div>
+                <div
+                    *ngFor="let row of timetable; let i = index"
+                    class="row"
+                    [ngClass]="{
+                    'row--top': ((i+1) % 2) === 1,
+                    'row--bot': ((i+1) % 2) === 0
+                }"
+                >
+                    <p *ngIf="((i+1) % 2) === 1">{{row.label}}</p>
+                </div>
+            </div>
+            <div class="timetable_court timetable_court_1">
+                <div class="row row--first">
+                    <p>Niebieski</p>
+                </div>
+                <div
+                    *ngFor="let row of timetable; let i = index"
+                    class="row"
+                    [ngClass]="{
+                    'row--top': ((i+1) % 2) === 1,
+                    'row--bot': ((i+1) % 2) === 0
+                }"
+                >
+                    <p>{{row.label}}</p>
+                </div>
+            </div>
+            <div class="timetable_court timetable_court_2">
+                <div class="row row--first">
+                    <p>Fioletowy</p>
+                </div>
+                <div
+                    *ngFor="let row of timetable; let i = index"
+                    class="row"
+                    [ngClass]="{
+                    'row--top': ((i+1) % 2) === 1,
+                    'row--bot': ((i+1) % 2) === 0
+                }"
+                >
+                    <p>{{row.label}}</p>
+                </div>
+            </div>
+            <div class="timetable_court timetable_court_3">
+                <div class="row row--first">
+                    <p>Rezerwowi</p>
+                </div>
+                <div
+                    *ngFor="let row of timetable; let i = index"
+                    class="row"
+                    [ngClass]="{
+                    'row--top': ((i+1) % 2) === 1,
+                    'row--bot': ((i+1) % 2) === 0
+                }"
+                >
+                    <p>{{row.label}}</p>
+                </div>
+            </div>
+            <div class="board">
+                <div
+                    #element
+                    *ngFor="let res of reservations"
+                    cdkDragBoundary=".board"
+                    cdkDragLockAxis="y"
+                    [cdkDragDisabled]="!res.isEditable"
+                    cdkDrag
+                    (cdkDragEnded)="dragEnd(res, $event, element)"
+                    (cdkDragStarted)="dragStart()"
+                    class="reservation"
+                    [ngClass]="{
+                        'reservation--small': res.timetable.ceilHeight <= 80,
+                        'reservation--partiallyPaid': 'partly'=== getReservationPaymentStatus(res),
+                        'reservation--paid': 'full'=== getReservationPaymentStatus(res)
+                    }"
+                    [ngStyle]="{
+                        'left': res.timetable.transformX + 'px',
+                        'top': res.timetable.transformY + 'px',
+                        'z-index': res.timetable.layer,
+                        'height': res.timetable.ceilHeight +'px'
+                    }"
+                >
+                    <div class="reservation_head">
+                        <p class="reservation_hour">
+                            {{res.form.timeFrom}} - {{res.form.timeTo}}
+                        </p>
+                        <button
+                            *ngIf="'full' !== getReservationPaymentStatus(res) && res.form.court != 3"
+                            class="cash"
+                            (click)="openPaymentModal(res)"
+                        >
+                            <svg>
+                                <use [attr.xlink:href]="environment.svg +'#icon-cash'"></use>
+                            </svg>
+                        </button>
+                        <button
+                            *ngIf="!res.isFirstPayment && res.isEditable"
+                            class="edit"
+                            (click)="editReservation(res)"
+                        >
+                            <svg>
+                                <use [attr.xlink:href]="environment.svg +'#icon-edit-2'"></use>
+                            </svg>
+                        </button>
+                        <button
+                            *ngIf="isDeleteBtn"
+                            class="delete"
+                            (click)="openDeleteModal(res)"
+                        >
+                            <svg>
+                                <use [attr.xlink:href]="environment.svg +'#icon-delete'"></use>
+                            </svg>
+                        </button>
+                    </div>
+                    <div
+                        class="reservation_main"
+                        [ngClass]="{'reservation--disabledDragging': res.isFirstPayment}"
+                        cdkDragHandle
+                        (pointerup)="moveOnTop(res)"
+                    >
+                        <p
+                            *ngIf="res.form.playerOne"
+                            class="reservation_player"
+                        >
+                            {{res.form.playerOne.name.slice(0,1)+ '. '}}{{res.form.playerOne.surname}}
+                        </p>
+                        <p
+                            *ngIf="res.form.guestOne"
+                            class="reservation_player"
+                        >
+                            {{res.form.guestOne}}
+                        </p>
+                        <p
+                            *ngIf="res.form.playerTwo"
+                            class="reservation_player"
+                        >
+                            {{res.form.playerTwo.name.slice(0,1)+ '. '}}{{res.form.playerTwo.surname}}
+                        </p>
+                        <p
+                            *ngIf="res.form.guestTwo"
+                            class="reservation_player"
+                        >
+                            {{res.form.guestTwo}}
+                        </p>
+                    </div>
+                    <div
+                        class="reservation_footer"
+                        *ngIf="!res.isFirstPayment && res.isEditable"
+                    >
+                        <button
+                            (click)="moveLeft(res)"
+                            [disabled]="res.form.court == 1"
+                        >
+                            <svg>
+                                <use [attr.xlink:href]="environment.svg +'#icon-arrow-left'"></use>
+                            </svg>
+                        </button>
+                        <button
+                            class="moveDown"
+                            (click)="moveDown(res)"
+                        >
+                            {{res.timetable.layer}}
+                            <svg>
+                                <use [attr.xlink:href]="environment.svg +'#icon-bring-on-ground'"></use>
+                            </svg>
+                        </button>
+                        <button
+                            (click)="moveRight(res)"
+                            [disabled]="res.form.court == 3"
+                        >
+                            <svg>
+                                <use [attr.xlink:href]="environment.svg +'#icon-arrow-right'"></use>
+                            </svg>
+                        </button>
+                    </div>
+                    <div
+                        *ngIf="res.isFirstPayment"
+                        class="reservation_footer"
+                    >
+                        <p
+                            *ngIf="'partly' === getReservationPaymentStatus(res)"
+                            class="info info--part"
+                        >
+                            opłacona częściowo
+                        </p>
+                        <p
+                            *ngIf="'full' === getReservationPaymentStatus(res)"
+                            class="info"
+                        >
+                            opłacona całkowicie
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-timetable-modal
+        *ngIf="isModal"
+        [modalAction]="modalAction"
+        [players]="players"
+        [date]="date"
+        [editedReservation]="editedReservation"
+        (outputCloseModal)="closeModal()"
+        (outputReservationForm)="submit($event)"
+    ></app-timetable-modal>
+    <app-delete-modal
+        *ngIf="isDeleteModal"
+        [reservation]="deletedReservation"
+        (outputIsConfirm)="handleDeleteModal($event)"
+    ></app-delete-modal>
+    <app-payment-modal
+        *ngIf="isPaymentModal"
+        [reservation]="paymentReservation"
+        [priceLists]="priceLists"
+        [players]="players"
+        (CloseModal)="closePaymentModal()"
+        (PayForReservation)="payForReservation($event)"
+    ></app-payment-modal>
+</div>

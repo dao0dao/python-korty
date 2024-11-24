@@ -1,0 +1,107 @@
+<div class="container">
+    <p class="title">Cenniki</p>
+    <div class="actions">
+        <button
+            class="btn btn--option"
+            (click)="changeSortDirection(true)"
+        >
+            Sortuj
+            <svg [ngClass]="{'upSideDown': !isSortAscending}">
+                <use [attr.xlink:href]="environment.svg +'#icon-sort-up'"></use>
+            </svg>
+        </button>
+        <input
+            type="text"
+            placeholder="Wyszukaj w nazwie..."
+            [(ngModel)]="searchingContent"
+            (keyup)="searchForName()"
+        >
+        <button
+            *ngIf="stateService.state.isAdmin"
+            class="btn btn--add"
+            (click)="openEditModal('new')"
+        >
+            Dodaj
+        </button>
+    </div>
+    <div class="list">
+        <div *ngFor="let item of sortedPriceList; let i = index">
+            <div
+                *ngIf="i >= (itemsPerPage*(page-1)) && i < ((itemsPerPage*(page-1))+itemsPerPage)"
+                class="element"
+            >
+                <p class="number">#{{i+1}}</p>
+                <p class="name">{{item.name}}</p>
+                <div class="buttons">
+                    <button
+                        class="btn btn--add"
+                        (click)="openEditModal('show', item.id)"
+                    >
+                        <svg>
+                            <use [attr.xlink:href]="environment.svg +'#icon-zoom-2'"></use>
+                        </svg>
+                    </button>
+                    <button
+                        *ngIf="stateService.state.isAdmin"
+                        class="btn btn--edit"
+                        (click)="openEditModal('edit', item.id)"
+                    >
+                        <svg>
+                            <use [attr.xlink:href]="environment.svg +'#icon-pencil'"></use>
+                        </svg>
+                    </button>
+                    <button
+                        *ngIf="stateService.state.isAdmin"
+                        class="btn btn--delete"
+                        (click)="openDeleteModal(item)"
+                    >
+                        <svg>
+                            <use [attr.xlink:href]="environment.svg +'#icon-delete'"></use>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pagination">
+        <p class="pagination_perPage">Graczy na stronę:</p>
+        <input
+            type="number"
+            min="1"
+            max="100"
+            class="pagination_count"
+            step="1"
+            [(ngModel)]="itemsPerPage"
+            (keyup)="setPageCount()"
+        >
+        <button
+            class="pagination_btn"
+            (click)="prevPage()"
+        >
+            <svg>
+                <use [attr.xlink:href]="environment.svg +'#icon-arrow-left'"></use>
+            </svg>
+        </button>
+        <p class="pagination_info">{{page}} z {{pageCount}}</p>
+        <button
+            class="pagination_btn"
+            (click)="nextPage()"
+        >
+            <svg>
+                <use [attr.xlink:href]="environment.svg +'#icon-arrow-right'"></use>
+            </svg>
+        </button>
+    </div>
+</div>
+<app-price-list-modal
+    *ngIf="isEditModal"
+    [action]="modalAction"
+    [priceList]="editedPriceList"
+    (outputClose)="closeEditModal($event)"
+    (outputNewList)="createList($event)"
+></app-price-list-modal>
+<app-price-delete-modal
+    *ngIf="isDeleteModal"
+    [priceList]="deletedPriceList"
+    (outputConfirm)="closeDeleteModal($event)"
+></app-price-delete-modal>

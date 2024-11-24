@@ -1,0 +1,260 @@
+@import "~src/assets/colors";
+.container {
+    height: 100%;
+}
+.header {
+    width: 100%;
+    max-width: 500px;
+    margin-top: 1rem;
+    .title {
+        margin: 0 auto;
+        font-size: 1.2rem;
+        text-align: center;
+    }
+}
+.list {
+    position: absolute;
+    overflow: auto;
+    z-index: 1;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-height: 200px;
+    display: none;
+    padding: 5px;
+    border-radius: 3px;
+    box-shadow: 1px 2px 4px;
+    background-color: hsl(0deg 0% 95%);
+    font-size: 0.8em;
+    list-style: none;
+    cursor: pointer;
+    &--open {
+        display: block;
+    }
+    &_element {
+        min-height: 26px;
+        padding: 5px;
+        &--active {
+            background-color: $background;
+        }
+    }
+}
+.field {
+    position: relative;
+    position: relative;
+    width: min-content;
+    margin: 2rem auto 0;
+    label {
+        position: absolute;
+        top: 50%;
+        left: -7px;
+        margin: 0 0.5rem;
+        transform: translateY(-50%);
+        transition: transform 0.3s ease-in-out;
+        font-size: 0.8rem;
+        text-align: right;
+        letter-spacing: 1px;
+        &.top {
+            top: 10px;
+            left: -5px;
+        }
+    }
+    input {
+        width: 210px;
+        padding: 5px 10px;
+        border-width: 0 0px 1px 0px;
+        border-style: solid;
+        border-color: $mainColorThree;
+        outline: unset;
+        text-align: center;
+        transition: border-color 0.3s ease-in-out;
+        &:focus-within,
+        &:hover,
+        &.full {
+            border-color: $mainColorOne;
+        }
+        &:hover + label,
+        &:focus-within + label,
+        &.full + label {
+            transform: translate(-101%, -50%);
+        }
+    }
+}
+.action {
+    width: 100%;
+    max-width: 400px;
+    margin-top: 1.5rem;
+    padding: 0 10px;
+    text-align: center;
+    .text {
+        font-size: 0.8em;
+    }
+    .btn {
+        margin: 0.5rem auto;
+    }
+}
+.block {
+    padding: 0 10px;
+    .field {
+        margin: 1rem auto;
+    }
+    &--data {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        input {
+            width: 170px;
+        }
+    }
+    &--disabled {
+        filter: grayscale(1);
+        pointer-events: none;
+        cursor: auto;
+    }
+}
+.balance {
+    margin-top: 1rem;
+    span {
+        margin: 0px 5px;
+    }
+    .name {
+        font-weight: 700;
+    }
+    .small {
+        font-size: 0.8em;
+    }
+    .currency {
+        color: $confirm;
+        font-weight: 700;
+        &--red {
+            color: $mainColorOne;
+        }
+    }
+}
+.history {
+    overflow: auto;
+    width: 100%;
+    flex-grow: 1;
+    flex-shrink: 0;
+    padding: 0 10px 10px;
+    .filters {
+        margin: 1.5rem auto 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+    .filter {
+        margin: 10px;
+        width: fit-content;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 0.8em;
+        input {
+            position: relative;
+            width: 15px;
+            height: 15px;
+            border-width: 2px;
+            border-color: $mainColorFour;
+            border-style: none solid solid none;
+            border-radius: 2px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            &::before,
+            &::after {
+                position: absolute;
+                height: 2px;
+                background-color: $mainColorOne;
+            }
+            &::before {
+                top: 10px;
+                left: 0;
+                width: 6px;
+                transform-origin: right center;
+                transform: rotate(45deg);
+            }
+            &::after {
+                top: 10px;
+                left: 5px;
+                width: 12px;
+                transform-origin: left center;
+                transform: rotate(-60deg);
+            }
+            &:checked {
+                border-color: $mainColorOne;
+                &::before,
+                &::after {
+                    content: "";
+                }
+            }
+        }
+        label {
+            margin-left: 5px;
+        }
+    }
+    .noData {
+        margin: 1rem auto;
+        color: $mainColorFour;
+        text-align: center;
+    }
+    table {
+        margin: 0.5rem auto;
+        border-collapse: collapse;
+        .btn {
+            margin: 0;
+            padding: 5px;
+        }
+    }
+    thead {
+        position: sticky;
+        top: 0;
+        border-bottom: 2px solid black;
+        background-color: $clearWhite;
+    }
+    th,
+    td {
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid $mainColorThree;
+    }
+    tr td {
+        font-size: 0.8em;
+    }
+    tr td:last-of-type {
+        border-bottom: none;
+        text-align: right;
+        span {
+            font-weight: 700;
+            color: $mainColorOne;
+        }
+    }
+    .paid {
+        font-weight: 700;
+        color: $confirm;
+        &--red {
+            color: $mainColorOne;
+        }
+    }
+}
+@media screen and (min-width: 992px) {
+    .action {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .text {
+            margin-top: unset;
+        }
+    }
+    .block {
+        width: min-content;
+        .field {
+            margin: 0.5rem auto;
+        }
+    }
+    .balance {
+        margin-top: 1.5rem;
+    }
+}

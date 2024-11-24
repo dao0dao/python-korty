@@ -1,0 +1,140 @@
+<div class="container">
+    <p *ngIf="users.length === 0">Brak użytkowników</p>
+    <div
+        *ngIf="users.length"
+        class="list"
+    >
+        <div class="label">
+            <p class="name">Nazwa konta</p>
+            <p class="login">Login</p>
+        </div>
+        <div
+            *ngFor="let user of users"
+            class="user"
+        >
+            <p class="name">{{user.name}}</p>
+            <p class="login">{{user.login}}</p>
+            <button
+                class="icon icon--edit"
+                (click)="openEditUser(user)"
+            >
+                <svg>
+                    <use [attr.href]="environment.svg+'#icon-edit'"></use>
+                </svg>
+            </button>
+            <button
+                class="icon icon--delete"
+                (click)="openDeleteUser(user)"
+            >
+                <svg>
+                    <use [attr.xlink:href]="environment.svg +'#icon-delete'"></use>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+<!-- edition pop up -->
+<div
+    *ngIf="isPopUp"
+    class="popUp_container"
+>
+    <div
+        class="popUp_card"
+    >
+        <p class="title">Edycja użytkownika:</p>
+        <p class="subtitle">{{name?.value}}</p>
+        <form
+            class="form"
+            [formGroup]="editForm"
+            (submit)="submitEdition()"
+        >
+            <div class="field">
+                <input
+                    id="name"
+                    type="text"
+                    class="input"
+                    formControlName="name"
+                    [ngClass]="{'full': name?.value}"
+                >
+                <label for="name">Nazwa konta</label>
+                <p class="error" *ngIf="name?.errors?.['incorrect']">błędne/ zajęta nazwa konta</p>
+            </div>
+            <div class="field">
+                <input
+                    id="login"
+                    type="text"
+                    class="input"
+                    formControlName="login"
+                    [ngClass]="{'full': login?.value}"
+                >
+                <label for="login">Login</label>
+            </div>
+            <div class="field">
+                <input
+                    id="password"
+                    type="password"
+                    class="input"
+                    formControlName="password"
+                    [ngClass]="{'full': password?.value}"
+                    (keyup)="checkPassword()"
+                >
+                <label for="password">Nowe hasło</label>
+            </div>
+            <div class="field">
+                <input
+                    id="confirmPassword"
+                    type="password"
+                    class="input"
+                    formControlName="confirmPassword"
+                    [ngClass]="{'full': confirmPassword?.value}"
+                    (keyup)="checkPassword()"
+                >
+                <label for="confirmPassword">Potwierdź hasło</label>
+                <p class="error" *ngIf="confirmPassword?.errors?.['incorrect']">Niezgodne hasła</p>
+            </div>
+            <div class="actions">
+                <button
+                    type="button"
+                    class="btn btn--close"
+                    (click)="closePopUp()"
+                >
+                    Zamknij
+                </button>
+                <button
+                    type="submit"
+                    class="btn btn--submit"
+                    [disabled]="editForm.invalid || blockSubmit"
+                >
+                    Zmień
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- delete popUp -->
+<div
+    *ngIf="isDeletePupUp"
+    class="popUp_container"
+>
+    <div
+        class="popUp_card popUp_card--delete"
+    >
+        <p class="title">Usunąć konto:</p>
+        <p class="subtitle">{{deletedName}}?</p>
+        <div class="actions">
+            <button
+                class="btn btn--close"
+                (click)="closePopUp()"
+            >
+                Nie
+            </button>
+            <button
+                class="btn btn--submit"
+                (click)="deleteUser()"
+                [disabled]="blockSubmit"
+            >
+                Tak
+            </button>
+        </div>
+    </div>
+</div>

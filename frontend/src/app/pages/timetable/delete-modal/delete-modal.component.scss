@@ -1,0 +1,55 @@
+@import "~src/assets/colors";
+
+.background {
+    position: fixed;
+    z-index: 3;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $background;
+}
+.container {
+    position: relative;
+    width: 95%;
+    max-width: 500px;
+    padding: 15px;
+    background-color: $clearWhite;
+    border-radius: 10px;
+}
+p {
+    margin: 0.5rem 0;
+}
+.title {
+    margin-top: 2rem;
+    font-weight: 700;
+    font-size: 1.1em;
+}
+.player,
+.date {
+    span {
+        margin: 5px;
+    }
+}
+
+.action {
+    margin: 2rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .btn {
+        margin: 1rem 2rem;
+        font-size: 1em;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .action {
+        .btn {
+            margin: 1rem 3rem;
+        }
+    }
+}

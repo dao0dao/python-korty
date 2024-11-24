@@ -1,0 +1,182 @@
+<div class="background">
+    <form
+        *ngIf="action === 'new' || action === 'edit'"
+        [formGroup]="form"
+        class="container"
+        (ngSubmit)="submit()"
+    >
+        <p
+            *ngIf="action === 'new'"
+            class="title title--new"
+        >
+            Nowy cennik
+        </p>
+        <p
+            *ngIf="action === 'edit'"
+            class="title title--edit"
+        >
+            Edycja cennika
+        </p>
+        <button
+            type="button"
+            class="btnX"
+            (click)="closeModal()"
+        >
+            <svg>
+                <use [attr.xlink:href]="environment.svg +'#icon-close'"></use>
+            </svg>
+        </button>
+        <div class="field">
+            <div class="block">
+                <input
+                    type="text"
+                    id="name"
+                    formControlName="name"
+                    [ngClass]="{'dirty': form.get('name')?.value}"
+                >
+                <label
+                    class="moved"
+                    for="name"
+                >
+                    Nazwa
+                </label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="block block--short">
+                <label for="defaultPrice">Cena bazowa</label>
+                <input
+                    type="text"
+                    id="defaultPrice"
+                    formControlName="defaultPrice"
+                    [ngClass]="{'dirty': form.get('defaultPrice')?.value >= 0}"
+                >
+            </div>
+        </div>
+        <div class="scroll">
+            <div
+                *ngFor="let field of fields | keyvalue"
+                class="field field--data"
+                [formGroupName]="'group-'+field.key"
+            >
+                <div class="column">
+                    <div class="block block--inline">
+                        <label [for]="'from'+field.key">Od</label>
+                        <input
+                            type="time"
+                            [id]="'from'+field.key"
+                            formControlName="from"
+                            (keyup)="validateSameHours(field.key)"
+                        >
+                    </div>
+                    <div class="block block--inline">
+                        <label [for]="'to' + field.key">do</label>
+                        <input
+                            type="time"
+                            [id]="'to'+field.key"
+                            formControlName="to"
+                            (keyup)="validateSameHours(field.key)"
+                        >
+                    </div>
+                    <div class="block">
+                        <input
+                            type="number"
+                            [id]="'price'+field.key"
+                            step="0.01"
+                            min="0"
+                            formControlName="price"
+                            [ngClass]="{'dirty': getField(field.key, 'price')?.value !== ''}"
+                        >
+                        <label
+                            class="moved moved--price"
+                            [for]="'price'+field.key"
+                        >
+                            Cena
+                        </label>
+                    </div>
+                    <div class="block">
+                        <div
+                            class="block block--inline block--day"
+                            *ngFor="let el of days"
+                        >
+                            <input
+                                type="checkbox"
+                                [id]="'d-'+field.key+'-'+el.id"
+                                [formControlName]="'d'+el.id"
+                                (change)="validateSameHours(field.key)"
+                            >
+                            <label [for]="'d-'+field.key+'-'+el.id">
+                                <svg class="checked">
+                                    <use [attr.xlink:href]="environment.svg +'#icon-checked'"></use>
+                                </svg>
+                                <svg>
+                                    <use [attr.xlink:href]="environment.svg +'#icon-checkbox'"></use>
+                                </svg>
+                                {{el.name}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <button
+                    type="button"
+                    (click)="removeField(field.key)"
+                >
+                    <svg>
+                        <use [attr.xlink:href]="environment.svg +'#icon-delete'"></use>
+                    </svg>
+                </button>
+                <div class="error">
+                    <p *ngIf="isErrorRequired(field.key)">Obowiązkowe pola</p>
+                    <p *ngIf="isSameHours && existedHourIndex == field.key">Nakładająca się godzina</p>
+                    <p *ngIf="wrongHours[field.key]">
+                        Godz. "OD" musi być mniejsza niż godz. "DO"
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="addField">
+            <button
+                type="button"
+                (click)="addField()"
+            >
+                <svg>
+                    <use [attr.xlink:href]="environment.svg +'#icon-plus-2'"></use>
+                </svg>
+                regułę
+            </button>
+        </div>
+        <button
+            type="submit"
+            class="btn btn--add"
+            [disabled]="form.invalid || existedHourIndex || isWrongHours"
+        >
+            Zapisz
+        </button>
+    </form>
+    <div
+        *ngIf="action === 'show'"
+        class="container container--show"
+    >
+        <button
+            type="button"
+            class="btnX"
+            (click)="closeModal()"
+        >
+            <svg>
+                <use [attr.xlink:href]="environment.svg +'#icon-close'"></use>
+            </svg>
+        </button>
+        <p class="title title--show">{{priceList?.name}}</p>
+        <div
+            *ngFor="let field of priceList?.hours | keyvalue"
+            class="field"
+        >
+            <p class="data">
+                <span>
+                    {{field.value.from}} - {{field.value.to}},
+                </span>
+                <span>Cena: {{field.value.price}}zł</span>
+            </p>
+        </div>
+    </div>
+</div>

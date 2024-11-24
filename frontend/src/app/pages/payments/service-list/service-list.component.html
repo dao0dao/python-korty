@@ -1,0 +1,86 @@
+<div class="background">
+    <form
+        class="container"
+        [formGroup]="form"
+        (ngSubmit)="submit()"
+    >
+        <button
+            type="button"
+            class="btnX"
+            (click)="closeList()"
+        >
+            <svg>
+                <use [attr.xlink:href]="environment.svg +'#icon-close'"></use>
+            </svg>
+        </button>
+        <div class="scroll">
+            <div
+                *ngFor="let s of services, let i = index;"
+                class="block"
+                [ngClass]="{
+                    'deleting': s.isDeleting,
+                    'deleted': s.isDeleted
+                }"
+                [formGroupName]="'group-'+i"
+            >
+                <div class="column">
+                    <div class="field">
+                        <input
+                            type="text"
+                            formControlName="name"
+                            [id]="'name-'+i"
+                            [ngClass]="{'full': getField(i, 'name')?.value}"
+                        >
+                        <label
+                            class="top"
+                            [for]="'name-'+i"
+                        >
+                            Usługa:
+                        </label>
+                    </div>
+                    <div class="field">
+                        <input
+                            type="number"
+                            name
+                            [id]="'price-'+i"
+                            min="0"
+                            step="0.01"
+                            formControlName="price"
+                            [ngClass]="{'full': getField(i, 'price')?.value !== null}"
+                        >
+                        <label [for]="'price-'+i">Cena:</label>
+                    </div>
+                </div>
+                <button
+                    type="button"
+                    class="btn btn--delete"
+                    (click)="removeField(i)"
+                >
+                    <svg>
+                        <use [attr.xlink:href]="environment.svg +'#icon-delete'"></use>
+                    </svg>
+                </button>
+            </div>
+            <div class="addField">
+                <button
+                    type="button"
+                    (click)="addField()"
+                >
+                    <svg>
+                        <use [attr.xlink:href]="environment.svg +'#icon-plus-2'"></use>
+                    </svg>
+                    usługę
+                </button>
+            </div>
+        </div>
+        <div class="submit">
+            <button
+                type="submit"
+                class="btn btn--add"
+                [disabled]="form.invalid"
+            >
+                Zapisz
+            </button>
+        </div>
+    </form>
+</div>

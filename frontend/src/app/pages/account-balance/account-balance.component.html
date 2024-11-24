@@ -1,0 +1,170 @@
+<div
+    class="container"
+    (click)="selectHandler.toggleList($event)"
+>
+    <div class="header">
+        <p class="title">Historia gracza</p>
+    </div>
+    <div class="field">
+        <input
+            type="text"
+            id="player"
+            [ngClass]="{'full': playerInput}"
+            [(ngModel)]="playerInput"
+            placeholder="Wybierz gracza"
+            (keydown)="selectHandler.keyDown($event, selectHandler.filteredPlayers.length+1)"
+            (keydown.enter)="selectPlayer()"
+            (keyup)="checkInput($event); selectHandler.findPlayer(playerInput, players)"
+        >
+        <ul
+            class="list"
+            [ngClass]="{'list--open': selectHandler.isOpen}"
+        >
+            <li
+                class="list_element"
+                [ngClass]="{'list_element--active' : selectHandler.activeIndex === 0}"
+                (click)="selectPlayerOnClick(null)"
+            >
+            </li>
+            <!-- <li
+                class="list_element"
+                [ngClass]="{'list_element--active' : selectHandler.activeIndex === 1}"
+                (click)="selectPlayerOnClick('all')"
+            >
+                Wszyscy gracze
+            </li> -->
+            <li
+                class="list_element"
+                [ngClass]="{'list_element--active' : selectHandler.activeIndex === i+1}"
+                *ngFor="let pl of selectHandler.filteredPlayers; let i = index"
+                (click)="selectPlayerOnClick(pl.id!)"
+            >
+                {{pl.name}} {{pl.surname}}
+            </li>
+        </ul>
+    </div>
+    <div class="action">
+        <div
+            class="block block--data"
+            [ngClass]="{'block--disabled': selectedPlayer === undefined}"
+        >
+            <div class="field">
+                <label for="date">od</label>
+                <input
+                    type="date"
+                    id="from"
+                    [max]="dateTo"
+                    [(ngModel)]="dateFrom"
+                    (change)="checkDate()"
+                >
+            </div>
+            <div class="field">
+                <label for="date">do</label>
+                <input
+                    type="date"
+                    id="to"
+                    [(ngModel)]="dateTo"
+                    (change)="checkDate()"
+                >
+            </div>
+        </div>
+        <button
+            type="button"
+            class="btn btn--edit"
+            [attr.disabled]="((!selectedPlayer  && !isAllPlayers) ||  dateTo == '' ) ? true: null"
+            (click)="showHistory()"
+        >
+            Pokaż historię
+        </button>
+    </div>
+    <div *ngIf="isLoading">
+        <app-loader></app-loader>
+    </div>
+    <div
+        *ngIf="(selectedPlayer || isAllPlayers) && history.length"
+        class="history"
+    >
+        <div
+            *ngIf="!history.length"
+            class="noData"
+        >
+            <p>Brak wpisów</p>
+        </div>
+        <table *ngIf="history.length">
+            <thead>
+                <tr>
+                    <th>Data wykonania</th>
+                    <th>Usługa</th>
+                    <th>Cena</th>
+                    <th>Typ płatności</th>
+                    <th>Opłacona</th>
+                    <th>Kasjer</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of history">
+                    <td>{{row.serviceDate}}</td>
+                    <td>{{row.serviceName}}</td>
+                    <td>{{row.price}}</td>
+                    <td>{{row.paymentMethod |paymentsName}}</td>
+                    <td
+                        class="paid"
+                        [ngClass]="{'paid--red': !row.isPaid}"
+                    >
+                        {{row.isPaid ? 'tak': 'nie'}}
+                    </td>
+                    <td>{{row.cashier}}</td>
+                    <td>
+                        <button
+                            *ngIf="!row.isPaid && (today === row.serviceDate || state.state.isAdmin === true)"
+                            type="button"
+                            class="btn btn--add"
+                            (click)="openModal(row)"
+                        >
+                            Zapłać
+                        </button>
+                    </td>
+                    <td>
+                        <button
+                            *ngIf="state.state.isAdmin === true"
+                            type="button"
+                            class="btn btn--delete"
+                            (click)="openDeleteModal(row)"
+                        >
+                            <svg>
+                                <use [attr.xlink:href]="environment.svg +'#icon-delete'"></use>
+                            </svg>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        łącznie do zapłaty:
+                        <span>{{totalPrice}} PLN</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        saldo konta:
+                        <span>{{balance}} PLN</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<app-pay-modal
+    *ngIf="isModal"
+    (CloseModal)="closeModal()"
+    (Pay)="acceptPayment($event)"
+    [payment]="payment"
+    [player]="selectedPlayer"
+></app-pay-modal>
+<app-history-delete-modal
+    *ngIf="isDeleteModal"
+    (Delete)="deleteHistory($event)"
+    [payment]="payment"
+    [player]="selectedPlayer"
+></app-history-delete-modal>

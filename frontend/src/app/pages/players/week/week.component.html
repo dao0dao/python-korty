@@ -1,0 +1,219 @@
+<form
+    class="form"
+    *ngIf="!isView"
+    [formGroup]="formWeek"
+    (submit)="addTerm()"
+>
+    <div class="day">
+        <input
+            type="checkbox"
+            id="mon"
+            formControlName="0"
+            (change)="checkDay()"
+        >
+        <label for="mon">
+            <svg class="checked">
+                <use [attr.xlink:href]="environment.svg +'#icon-checked'"></use>
+            </svg>
+            <svg>
+                <use [attr.xlink:href]="environment.svg +'#icon-checkbox'"></use>
+            </svg>
+            Pn.
+        </label>
+    </div>
+    <div class="day">
+        <input
+            type="checkbox"
+            id="tue"
+            formControlName="1"
+            (change)="checkDay()"
+        >
+        <label for="tue">
+            <svg class="checked">
+                <use [attr.xlink:href]="environment.svg +'#icon-checked'"></use>
+            </svg>
+            <svg>
+                <use [attr.xlink:href]="environment.svg +'#icon-checkbox'"></use>
+            </svg>
+            Wt.
+        </label>
+    </div>
+    <div class="day">
+        <input
+            type="checkbox"
+            id="wen"
+            formControlName="2"
+            (change)="checkDay()"
+        >
+        <label for="wen">
+            <svg class="checked">
+                <use [attr.xlink:href]="environment.svg +'#icon-checked'"></use>
+            </svg>
+            <svg>
+                <use [attr.xlink:href]="environment.svg +'#icon-checkbox'"></use>
+            </svg>
+            Śr.
+        </label>
+    </div>
+    <div class="day">
+        <input
+            type="checkbox"
+            id="thu"
+            formControlName="3"
+            (change)="checkDay()"
+        >
+        <label for="thu">
+            Cz.
+            <svg class="checked">
+                <use [attr.xlink:href]="environment.svg +'#icon-checked'"></use>
+            </svg>
+            <svg>
+                <use [attr.xlink:href]="environment.svg +'#icon-checkbox'"></use>
+            </svg>
+        </label>
+    </div>
+    <div class="day">
+        <input
+            type="checkbox"
+            id="fri"
+            formControlName="4"
+            (change)="checkDay()"
+        >
+        <label for="fri">
+            <svg class="checked">
+                <use [attr.xlink:href]="environment.svg +'#icon-checked'"></use>
+            </svg>
+            <svg>
+                <use [attr.xlink:href]="environment.svg +'#icon-checkbox'"></use>
+            </svg>
+            Pt.
+        </label>
+    </div>
+    <div class="day">
+        <input
+            type="checkbox"
+            id="sat"
+            formControlName="5"
+            (change)="checkDay()"
+        >
+        <label for="sat">
+            <svg class="checked">
+                <use [attr.xlink:href]="environment.svg +'#icon-checked'"></use>
+            </svg>
+            <svg>
+                <use [attr.xlink:href]="environment.svg +'#icon-checkbox'"></use>
+            </svg>
+            Sb.
+        </label>
+    </div>
+    <div class="day">
+        <input
+            type="checkbox"
+            id="sun"
+            formControlName="6"
+            (change)="checkDay()"
+        >
+        <label for="sun">
+            <svg class="checked">
+                <use [attr.xlink:href]="environment.svg +'#icon-checked'"></use>
+            </svg>
+            <svg>
+                <use [attr.xlink:href]="environment.svg +'#icon-checkbox'"></use>
+            </svg>
+            Nd.
+        </label>
+    </div>
+    <div class="hour">
+        <span>od</span>
+        <input
+            type="time"
+            class="time"
+            formControlName="from"
+            (change)="checkHour()"
+        >
+        <span>do</span>
+        <input
+            type="time"
+            class="time"
+            formControlName="to"
+            (change)="checkHour()"
+        >
+    </div>
+    <button
+        type="submit"
+        class="btn btn--add"
+        [disabled]="formWeek.invalid"
+    >
+        <svg>
+            <use [attr.xlink:href]="environment.svg +'#icon-plus'"></use>
+        </svg>
+        dodaj
+    </button>
+</form>
+<div class="list">
+    <div
+        *ngFor="let week of weeks; let i = index"
+        class="week"
+    >
+        <p class="index">#{{i+1}}.</p>
+        <div class="block">
+            <p class="days">
+                <span
+                    class="day"
+                    *ngIf="week.days['0']"
+                >
+                    pn,
+                </span>
+                <span
+                    class="day"
+                    *ngIf="week.days['1']"
+                >
+                    wt,
+                </span>
+                <span
+                    class="day"
+                    *ngIf="week.days['2']"
+                >
+                    śr,
+                </span>
+                <span
+                    class="day"
+                    *ngIf="week.days['3']"
+                >
+                    cz,
+                </span>
+                <span
+                    class="day"
+                    *ngIf="week.days['4']"
+                >
+                    pt,
+                </span>
+                <span
+                    class="day"
+                    *ngIf="week.days['5']"
+                >
+                    sb,
+                </span>
+                <span
+                    class="day"
+                    *ngIf="week.days['6']"
+                >
+                    nd,
+                </span>
+            </p>
+            <p class="hour">
+                <span *ngIf="week.time.from">od {{week.time.from}}</span>
+                <span *ngIf="week.time.to">do {{week.time.to}}</span>
+            </p>
+        </div>
+        <button
+            type="button"
+            (click)="removeTerm(i)"
+            *ngIf="!isView"
+        >
+            <svg>
+                <use [attr.xlink:href]="environment.svg +'#icon-delete'"></use>
+            </svg>
+        </button>
+    </div>
+</div>

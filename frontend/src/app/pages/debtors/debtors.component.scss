@@ -1,0 +1,154 @@
+@import "~src/assets/colors";
+.container {
+    height: 100%;
+}
+.header {
+    width: 100%;
+    max-width: 500px;
+    margin: 1rem auto;
+    .title {
+        margin: 0 auto;
+        font-size: 1.2rem;
+        text-align: center;
+    }
+}
+.action {
+    margin-bottom: 1rem;
+}
+.noData {
+    font-size: 0.8em;
+    font-weight: 700;
+    color: $mainColorFour;
+}
+.table {
+    overflow: auto;
+    max-height: 100vh;
+    padding: 0 5px;
+}
+table {
+    margin: 0.5rem auto;
+    border-collapse: collapse;
+    .btn {
+        height: 30px;
+        aspect-ratio: 1/1;
+        padding: 5px 0;
+        justify-content: center;
+        svg {
+            max-height: 100%;
+            max-width: 100%;
+        }
+    }
+}
+td {
+    padding: 10px;
+    border-bottom: 1px solid $mainColorThree;
+    font-size: 0.8em;
+    text-align: center;
+    &.red {
+        font-weight: 700;
+        color: $mainColorOne;
+    }
+}
+.popUp {
+    &_background {
+        position: fixed;
+        z-index: 3;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: $background;
+    }
+    &_container {
+        position: relative;
+        width: 95%;
+        max-width: 300px;
+        height: 95%;
+        max-height: 500px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        border-radius: $mainBorderRadius;
+        background-color: $clearWhite;
+    }
+    .btnX {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 30px;
+        height: 30px;
+        background-color: $clearWhite;
+        border: none;
+        transform: translate(27%, -50%);
+        border-radius: 50%;
+        svg {
+            max-width: 100%;
+            max-height: 100%;
+            fill: $mainColorFour;
+        }
+    }
+    &_name {
+        margin-top: 2rem;
+        font-weight: 700;
+        color: $mainColorThree;
+    }
+    &_email,
+    &_phone {
+        margin-top: 1.5rem;
+        font-size: 0.8em;
+        color: $mainColorFour;
+        font-weight: 700;
+        span {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+    }
+    &_debet {
+        margin-top: 2rem;
+        font-size: 0.8;
+        font-weight: 700;
+        span {
+            font-weight: 700;
+            color: $mainColorOne;
+        }
+    }
+    &_contact {
+        width: 100%;
+        margin-top: auto;
+        margin-bottom: 1rem;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        .btn {
+            margin: 0;
+            svg {
+                margin: 0;
+                max-height: 25px;
+                max-width: 25px;
+            }
+            &--phone,
+            &--sms {
+                &::before,
+                &::after {
+                    display: none;
+                }
+            }
+            &--sms {
+                svg {
+                    fill: $yellow;
+                }
+            }
+        }
+    }
+}
+@media screen and (min-width: 700px) {
+    .popUp {
+        &_contact {
+            display: none;
+        }
+    }
+}

@@ -1,0 +1,36 @@
+<div class="background">
+    <div class="container">
+        <p class="title">Usunąć rezerwację z dnia:</p>
+        <p class="date">
+            <span>{{res?.form?.date}}</span>
+            <span>{{res?.form?.timeFrom}}</span>
+            <span>-</span>
+            <span>{{res?.form?.timeTo}}</span>
+        </p>
+        <p class="player">
+            <span *ngIf="res?.form?.playerOne">
+                {{res?.form?.playerOne?.name?.slice(0,1)+ '. '}}{{res?.form?.playerOne?.surname}}
+            </span>
+            <span *ngIf="res?.form?.guestOne">{{res?.form?.guestOne}}</span>
+            <span *ngIf="(res?.form?.playerOne || res?.form?.guestOne) && (res?.form?.playerTwo || res?.form?.guestTwo)">-</span>
+            <span *ngIf="res?.form?.playerTwo">
+                {{res?.form?.playerTwo?.name?.slice(0,1)+ '. '}}{{res?.form?.playerTwo?.surname}}
+            </span>
+            <span *ngIf="res?.form?.guestTwo">{{res?.form?.guestTwo}}</span>
+        </p>
+        <div class="action">
+            <button
+                class="btn btn--add"
+                (click)="cancel()"
+            >
+                Nie
+            </button>
+            <button
+                class="btn btn--submit"
+                (click)="confirm()"
+            >
+                Tak
+            </button>
+        </div>
+    </div>
+</div>

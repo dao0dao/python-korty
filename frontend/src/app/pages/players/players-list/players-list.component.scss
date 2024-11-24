@@ -1,0 +1,189 @@
+@import "~src/assets/colors";
+:host {
+    flex-grow: 1;
+}
+
+.container {
+    width: 100vw;
+    max-width: 700px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    &_head {
+        margin: 1rem 0 2rem;
+        text-align: center;
+        .btn--sort {
+            margin: 10px;
+            padding: 5px;
+            border-color: $confirm;
+            border-style: solid;
+            border-width: 0 0 1px;
+            box-shadow: $mainShadow;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
+            color: $mainColorTwo;
+            svg {
+                opacity: 0;
+                max-width: 20px;
+                max-height: 20px;
+                margin-left: 5px;
+                transform: rotateX(0);
+                transition: opacity 0.2s linear, transform 0.2s linear;
+                fill: $clearWhite;
+            }
+            &--down {
+                svg {
+                    transform: rotateX(180deg);
+                }
+            }
+            &--active {
+                color: $clearWhite;
+                background-color: $confirm;
+                svg {
+                    opacity: 1;
+                }
+            }
+        }
+        .search {
+            margin: 10px;
+            padding: 5px 10px;
+            border-width: 0 0 1px 0;
+            border-color: $mainColorThree;
+            border-style: solid;
+            outline: none;
+            &:focus,
+            &:focus-within {
+                border-color: $mainColorOne;
+            }
+        }
+        .searchWeek {
+            margin-top: 1rem;
+            .title {
+                margin-bottom: 0.5rem;
+            }
+            app-search-week {
+                display: inline;
+            }
+        }
+    }
+    &_card {
+        margin-bottom: 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        .number {
+            margin-left: 0.5rem;
+        }
+        .text {
+            flex-grow: 1;
+            text-align: center;
+            font-weight: 700;
+        }
+        .buttons {
+            flex-basis: 100%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .btn {
+            svg {
+                margin-right: 0;
+            }
+            &--phone,
+            &--sms {
+                &::before,
+                &::after {
+                    display: none;
+                }
+            }
+            &--phone {
+                margin: 0.5rem;
+            }
+            &--sms {
+                margin-left: 0;
+                margin-right: auto;
+                svg {
+                    fill: $yellow;
+                }
+            }
+        }
+    }
+    .pagination {
+        margin-top: auto;
+        margin-bottom: 0.5rem;
+        padding: 0px 5px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        &_perPage {
+            font-size: 12px;
+        }
+        &_count {
+            width: 35px;
+            height: 35px;
+            margin-right: auto;
+            text-align: center;
+            border: 1px solid $confirm;
+            -moz-appearance: textfield;
+            &::-webkit-outer-spin-button,
+            &::-webkit-inner-spin-button {
+                display: none;
+                -webkit-appearance: none;
+                margin: 0;
+            }
+        }
+        &_info {
+            font-size: 12px;
+            min-width: 70px;
+            text-align: center;
+        }
+        &_btn {
+            width: 30px;
+            height: 30px;
+            padding: 5px;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
+            svg {
+                max-height: 100%;
+                max-width: 100%;
+                fill: $mainColorOne;
+            }
+        }
+    }
+}
+// Desktop
+@media screen and (min-width: 992px) {
+    :host {
+        flex-grow: 1;
+    }
+    .container {
+        &_head {
+            .searchWeek {
+                .title {
+                    box-shadow: unset;
+                    cursor: auto;
+                }
+            }
+        }
+        &_card {
+            &:hover {
+                background-color: hsla(0, 0%, 73%, 0.25);
+            }
+            .buttons {
+                flex-basis: unset;
+                .btn--phone,
+                .btn--sms {
+                    display: none;
+                }
+            }
+        }
+    }
+}

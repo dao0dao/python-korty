@@ -1,0 +1,180 @@
+@import "~src/assets/colors";
+
+.container {
+    width: 100vw;
+    max-width: 600px;
+    margin-top: 1.5rem;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.list {
+    flex-basis: 100%;
+}
+.label,
+.user {
+    flex-basis: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    .name,
+    .login {
+        flex-basis: 120px;
+        margin-left: 1rem;
+    }
+}
+.user {
+    margin: 0.5rem auto;
+}
+.icon {
+    margin: 10px;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border: unset;
+    cursor: pointer;
+    svg {
+        width: 25px;
+        max-height: 25px;
+        stroke-width: 2;
+    }
+    &--edit {
+        margin-left: auto;
+        svg {
+            fill: $yellow;
+        }
+    }
+    &--delete {
+        svg {
+            fill: $mainColorOne;
+        }
+    }
+}
+.popUp {
+    &_container {
+        position: fixed;
+        z-index: 3;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: $background;
+    }
+    &_card {
+        width: 95%;
+        height: 80%;
+        display: flex;
+        border-radius: $mainBorderRadius;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: stretch;
+        background-color: $clearWhite;
+        text-align: center;
+        .title {
+            margin: 2rem auto 1rem;
+            font-weight: 700;
+        }
+        .subtitle {
+            margin: 1rem auto;
+        }
+        .form {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .field {
+            position: relative;
+            label {
+                position: absolute;
+                top: 0;
+                left: 12px;
+                transform: translateY(30px);
+                font-size: 0.8em;
+                color: $mainColorFour;
+                transition: transform 0.3s ease-in-out;
+            }
+            &:hover label,
+            .input:focus + label,
+            .input.full + label {
+                transform: translateY(15px);
+            }
+            .error {
+                position: absolute;
+                bottom: 10px;
+                left: 0;
+                width: 100%;
+                font-size: 10px;
+                text-align: center;
+                color: $mainColorOne;
+            }
+        }
+        .input {
+            margin: 1.5rem auto;
+            padding: 5px 10px;
+            border-color: transparent transparent $mainColorThree transparent;
+            border-width: 1px;
+            border-style: solid;
+            background-color: transparent;
+            &:hover,
+            &:focus,
+            &.full {
+                border-bottom-color: $mainColorOne;
+                outline: none;
+            }
+        }
+        .actions {
+            margin-top: auto;
+            .btn {
+                margin: 2.5rem auto;
+                display: block;
+                &--submit:not([disabled]) {
+                    color: $mainColorTwo;
+                }
+            }
+        }
+        &--delete {
+            .title {
+                color: $mainColorOne;
+            }
+            .actions .btn {
+                margin: 2.5rem;
+                display: inline-block;
+                &--submit {
+                    color: $mainColorOne;
+                }
+            }
+        }
+    }
+}
+@media screen and (min-width: 992px) {
+    .popUp {
+        &_card {
+            max-width: 700px;
+            max-height: 500px;
+            &--delete {
+                max-width: 400px;
+                max-height: 300px;
+            }
+            .subtitle {
+                margin-top: 0;
+            }
+            .actions {
+                width: 100%;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                .btn {
+                    margin-top: 0;
+                }
+            }
+        }
+    }
+}

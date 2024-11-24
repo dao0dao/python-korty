@@ -1,0 +1,135 @@
+<div class="body">
+    <nav [ngClass]="{'active': isMenu}">
+        <div
+            *ngIf="loginState.state.isLogin"
+            @nav
+            class="burger"
+            (click)="toggleMenu()"
+        >
+            <div class="lineMenu lineTop"></div>
+            <div class="lineMenu lineMid"></div>
+            <div class="lineMenu lineBot"></div>
+        </div>
+        <p
+            *ngIf="loginState.state.isLogin"
+            @nav
+            class="account"
+        >
+            Konto:
+            <span>{{loginState.state.user}}</span>
+        </p>
+        <div
+            *ngIf="loginState.state.isLogin"
+            @nav
+            class="menuList"
+        >
+            <a
+                routerLinkActive="btn--active"
+                [routerLink]="['/timetable']"
+                class="btn "
+                routerLinkActive="btn--active"
+                (click)="toggleMenu()"
+            >
+                Grafik
+            </a>
+            <a
+                routerLinkActive="btn--active"
+                [routerLink]="['/players']"
+                class="btn"
+                routerLinkActive="btn--active"
+                (click)="toggleMenu()"
+            >
+                Gracze
+            </a>
+            <div
+                class="group"
+                [ngClass]="{'group--active': isPayments}"
+            >
+                <p
+                    class="btn group_title"
+                    [ngClass]="{'btn--active': isActivePayments}"
+                    (click)="togglePayments()"
+                >
+                    Finanse
+                </p>
+                <div
+                    *ngIf="isPayments"
+                    class="group_list"
+                >
+                    <a
+                        routerLinkActive="btn--active"
+                        [routerLink]="['/player/history']"
+                        class="btn group_element"
+                        routerLinkActive="btn--active"
+                        (click)="toggleMenu()"
+                    >
+                        Gracz
+                    </a>
+                    <a
+                        routerLinkActive="btn--active"
+                        [routerLink]="['/price/debtors']"
+                        class="btn group_element"
+                        routerLinkActive="btn--active"
+                        (click)="toggleMenu()"
+                    >
+                        Dłużnicy
+                    </a>
+                    <a
+                        routerLinkActive="btn--active"
+                        [routerLink]="['/price/services']"
+                        class="btn group_element"
+                        routerLinkActive="btn--active"
+                        (click)="toggleMenu()"
+                    >
+                        Usługi
+                    </a>
+                    <a
+                        routerLinkActive="btn--active"
+                        [routerLink]="['/price/list']"
+                        class="btn group_element"
+                        routerLinkActive="btn--active"
+                        (click)="toggleMenu()"
+                    >
+                        Cenniki
+                    </a>
+                </div>
+            </div>
+            <a
+                routerLinkActive="btn--active"
+                [routerLink]="['/users']"
+                class="btn "
+                routerLinkActive="btn--active"
+                (click)="toggleMenu()"
+            >
+                Kasjerzy
+            </a>
+            <button
+                type="button"
+                class="btn "
+                (click)="logout()"
+            >
+                Wyloguj
+            </button>
+        </div>
+    </nav>
+    <div class="content">
+        <router-outlet></router-outlet>
+    </div>
+    <div
+        @info
+        *ngIf="infoService.data.isInfo"
+        class="info"
+        [ngClass]="{'info--confirm': infoService.data.confirm}"
+    >
+        <p class="text">{{infoService.data.infoText}}</p>
+    </div>
+    <footer>
+        <a
+            href="https://dao0dao.github.io/dao/"
+            target="blank"
+        >
+            Created and designed with passion by
+            <span>< Dao /></span>
+        </a>
+    </footer>
+</div>

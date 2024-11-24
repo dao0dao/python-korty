@@ -1,0 +1,161 @@
+<div class="background">
+    <div class="container">
+        <div
+            *ngIf="isSubmitting"
+            class="loader"
+        >
+            <app-loader></app-loader>
+        </div>
+        <button
+            type="button"
+            class="btnX"
+            (click)="closeModal()"
+        >
+            <svg>
+                <use [attr.xlink:href]="environment.svg +'#icon-close'"></use>
+            </svg>
+        </button>
+        <p class="title">Płatność za kort</p>
+        <div class="date">
+            <p class="text">
+                data:
+                <span>{{reservation?.form?.date}}</span>
+            </p>
+            <p class="text">
+                godzina:
+                <span>{{timeFrom}}-{{timeTo}}</span>
+            </p>
+            <p class="text">
+                kort:
+                <span>{{court}}</span>
+            </p>
+        </div>
+        <div class="scroll">
+            <!-- pierwszy gracz -->
+            <div
+                *ngIf="playerOneName && !isPlayerOnePayed"
+                class="player"
+            >
+                <p class="name">
+                    gracz:
+                    <span>{{playerOneName}}</span>
+                </p>
+                <div class="cost">
+                    <label>należność:</label>
+                    <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        [(ngModel)]="paymentOne"
+                        (keyup)="checkValue('one')"
+                    >
+                    <span>PLN</span>
+                </div>
+                <div
+                    class="method"
+                >
+                    <p>Forma płatności:</p>
+                    <div class="input">
+                        <input
+                            type="radio"
+                            id="cash1"
+                            name="method1"
+                            value="cash"
+                            [(ngModel)]="methodOne"
+                        >
+                        <label for="cash1">gotówka</label>
+                    </div>
+                    <div class="input">
+                        <input
+                            type="radio"
+                            id="transfer1"
+                            name="method1"
+                            value="transfer"
+                            [(ngModel)]="methodOne"
+                        >
+                        <label for="transfer1">przelew</label>
+                    </div>
+                    <div
+                        *ngIf="isPlayerOneFromBase"
+                        class="input"
+                    >
+                        <input
+                            type="radio"
+                            id="payment1"
+                            name="method1"
+                            value="payment"
+                            [(ngModel)]="methodOne"
+                        >
+                        <label for="payment1">pobranie z konta</label>
+                    </div>
+                </div>
+            </div>
+            <div
+                *ngIf="playerTwoName && !isPlayerTwoPayed"
+                class="player"
+            >
+                <!-- drugi gracz -->
+                <p class="name">
+                    gracz:
+                    <span>{{playerTwoName}}</span>
+                </p>
+                <div class="cost">
+                    <label>należność:</label>
+                    <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        [(ngModel)]="paymentTwo"
+                        (keyup)="checkValue('two')"
+                    >
+                    <span>PLN</span>
+                </div>
+                <div
+                    class="method"
+                >
+                    <p>Forma płatności:</p>
+                    <div class="input">
+                        <input
+                            type="radio"
+                            id="cash2"
+                            name="method2"
+                            value="cash"
+                            [(ngModel)]="methodTwo"
+                        >
+                        <label for="cash2">gotówka</label>
+                    </div>
+                    <div class="input">
+                        <input
+                            type="radio"
+                            id="transfer2"
+                            name="method2"
+                            value="transfer"
+                            [(ngModel)]="methodTwo"
+                        >
+                        <label for="transfer2">przelew</label>
+                    </div>
+                    <div
+                        *ngIf="isPlayerTwoFromBase"
+                        class="input"
+                    >
+                        <input
+                            type="radio"
+                            id="payment2"
+                            name="method2"
+                            value="payment"
+                            [(ngModel)]="methodTwo"
+                        >
+                        <label for="payment2">pobranie z konta</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button
+            class="btn btn--add"
+            [attr.disabled]="((playerOneName && (!paymentOne || !methodOne)) === true || (playerTwoName && (!paymentTwo || !methodTwo)) === true) ? true : null"
+            (click)="payForReservation()"
+        >
+            Zapisz
+        </button>
+    </div>
+</div>

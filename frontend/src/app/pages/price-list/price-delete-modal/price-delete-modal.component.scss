@@ -1,0 +1,47 @@
+@import "~src/assets/colors";
+.background {
+    position: fixed;
+    z-index: 3;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $background;
+}
+.container {
+    position: relative;
+    width: 90%;
+    max-width: 350px;
+    height: 90%;
+    max-height: 500px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: $clearWhite;
+}
+.title {
+    margin-top: 2rem;
+    font-size: 1.2em;
+    font-weight: 700;
+}
+.name {
+    margin-top: 2rem;
+}
+.actions {
+    width: 100%;
+    margin-top: auto;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.btn {
+    &--add {
+        color: $confirm;
+    }
+    &--delete {
+        color: $mainColorOne;
+    }
+}

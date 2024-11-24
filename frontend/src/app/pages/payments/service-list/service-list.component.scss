@@ -1,0 +1,149 @@
+@import "~src/assets/colors";
+.background {
+    position: fixed;
+    z-index: 3;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $background;
+}
+.container {
+    position: relative;
+    width: 90%;
+    max-width: 600px;
+    height: 90%;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: $clearWhite;
+}
+.btnX {
+    position: absolute;
+    top: 0;
+    right: 4px;
+    width: 30px;
+    height: 30px;
+    background-color: $clearWhite;
+    border: none;
+    transform: translate(27%, -50%);
+    border-radius: 50%;
+    svg {
+        max-width: 100%;
+        max-height: 100%;
+        fill: $mainColorFour;
+    }
+}
+.scroll {
+    overflow: auto;
+    flex-grow: 1;
+    width: 100%;
+    margin-top: 10px;
+    padding-right: 10px;
+}
+.block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid $background;
+    &.deleting {
+        pointer-events: none;
+        opacity: 0.5;
+        filter: grayscale(1);
+    }
+    &.deleted{
+        display: none;
+    }
+    .btn--delete {
+        padding: 0.5rem;
+    }
+}
+.column {
+    flex-grow: 1;
+}
+.field {
+    position: relative;
+    width: min-content;
+    margin: 2rem 1rem 2rem auto;
+    label {
+        position: absolute;
+        top: 50%;
+        left: -7px;
+        margin: 0 0.5rem;
+        transform: translateY(-50%);
+        transition: transform 0.3s ease-in-out;
+        font-size: 0.8rem;
+        text-align: right;
+        letter-spacing: 1px;
+        &.top {
+            top: 10px;
+            left: -5px;
+        }
+    }
+    input {
+        width: 150px;
+        padding: 5px 10px;
+        border-width: 0 0px 1px 0px;
+        border-style: solid;
+        border-color: $mainColorThree;
+        outline: unset;
+        transition: border-color 0.3s ease-in-out;
+        &[type="text"] {
+            width: 220px;
+        }
+        &[type="number"] {
+            width: 80px;
+        }
+        &:focus-within,
+        &:hover,
+        &.full {
+            border-color: $mainColorOne;
+        }
+        &:hover + label,
+        &:focus-within + label,
+        &.full + label {
+            transform: translate(-101%, -50%);
+        }
+        &:hover + label.top,
+        &:focus-within + label.top,
+        &.full + label.top {
+            transform: translate(0%, -25px);
+        }
+    }
+}
+.addField {
+    width: 100%;
+    button {
+        margin: 0.5rem 1rem 2rem auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: none;
+        background-color: transparent;
+        svg {
+            margin-right: 5px;
+            max-width: 25px;
+            max-height: 25px;
+            fill: $confirm;
+        }
+    }
+}
+@media screen and (min-width: 992px) {
+    .btnX {
+        top: 0;
+        right: 0;
+        transform: translate(50%, -50%);
+    }
+    .column {
+        display: flex;
+        justify-content: space-around;
+    }
+    .field {
+        margin: 2rem auto;
+        &:first-of-type {
+            margin-left: 4rem;
+        }
+    }
+}

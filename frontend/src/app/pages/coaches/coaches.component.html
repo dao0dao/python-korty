@@ -1,0 +1,113 @@
+<div class="container">
+    <div
+        *ngIf="loginState.state.isAdmin"
+        class="buttons"
+    >
+        <button
+            class="btn btn--left"
+            [ngClass]="{'btn--active': overlap === 'user'}"
+            (click)="toggleList('user')"
+        >
+            Aktywne konto
+        </button>
+        <button
+            class="btn btn--right"
+            [ngClass]="{'btn--active': overlap === 'list'}"
+            (click)="toggleList('list')"
+        >
+            Kasjerzy
+        </button>
+        <button
+            class="btn btn--left"
+            [ngClass]="{'btn--active': overlap === 'add'}"
+            (click)="toggleList('add')"
+        >
+            Dodaj kasjera
+        </button>
+    </div>
+    <form
+        *ngIf="overlap === 'user'"
+        class="form"
+        [formGroup]="userForm"
+        (submit)="submit()"
+    >
+        <div class="field">
+            <input
+                type="text"
+                formControlName="name"
+                id="name"
+                [ngClass]="{'full': name?.value}"
+            >
+            <label for="name">Nazw konta</label>
+            <p
+                *ngIf="name?.errors?.['minlength'] || name?.errors?.['maxlength']"
+                class="error"
+            >
+                Od 3 do 15 znaków, tylko litery i liczby
+            </p>
+            <p
+                *ngIf="name?.errors?.['incorrect']"
+                class="error"
+            >
+                Nieprawidłowa wartość
+            </p>
+        </div>
+        <div class="field">
+            <input
+                type="text"
+                formControlName="nick"
+                id="nick"
+                [ngClass]="{'full': nick?.value}"
+            >
+            <label for="login">Login</label>
+            <div class="error">
+                <p *ngIf="nick?.errors">Wymagane pole</p>
+                <p *ngIf="nick?.errors?.['incorrect']">Nieprawidłowa wartość</p>
+            </div>
+        </div>
+        <div class="field">
+            <input
+                type="password"
+                formControlName="newPassword"
+                id="newPassword"
+                [ngClass]="{'full': newPassword?.value}"
+                (keyup)="checkPassword()"
+            >
+            <label for="newPassword">Nowe hasło</label>
+            <div class="error">
+                <p *ngIf="newPassword?.errors?.['required']">Wymagane pole</p>
+                <p *ngIf="newPassword?.errors?.['minlength'] || newPassword?.errors?.['maxlength']">
+                    Od 5 do 10 znaków, tylko litery i liczby
+                </p>
+                <p *ngIf="newPassword?.errors?.['incorrect']">Nieprawidłowa wartość</p>
+            </div>
+        </div>
+        <div class="field">
+            <input
+                type="password"
+                formControlName="confirmNewPassword"
+                id="confirmNewPassword"
+                [ngClass]="{'full': confirmNewPassword?.value}"
+                (keyup)="checkPassword()"
+            >
+            <label for="confirmNewPassword">Potwierdź hasło</label>
+            <div class="error">
+                <p *ngIf="confirmNewPassword?.errors?.['required']">Wymagane pole</p>
+                <p *ngIf="confirmNewPassword?.errors?.['minlength'] || confirmNewPassword?.errors?.['maxlength']">
+                    Od 5 do 10 znaków, tylko litery i liczby
+                </p>
+                <p *ngIf="!samePassword">Hasła nie są identyczne</p>
+                <p *ngIf="confirmNewPassword?.errors?.['incorrect']">Nieprawidłowa wartość</p>
+            </div>
+        </div>
+        <button
+            class="btn btn--submit"
+            type="submit"
+            [disabled]="userForm.invalid || !samePassword || blockSubmit"
+        >
+            Aktualizuj
+        </button>
+    </form>
+    <app-list *ngIf="loginState.state.isAdmin && overlap === 'list'"></app-list>
+    <app-add *ngIf="loginState.state.isAdmin && overlap === 'add'"></app-add>
+</div>

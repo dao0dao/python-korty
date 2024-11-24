@@ -1,0 +1,78 @@
+<div class="container">
+    <form
+        class="form"
+        [formGroup]="addForm"
+        (submit)="submit()"
+    >
+        <div class="field">
+            <input
+                type="text"
+                id="name"
+                formControlName="name"
+                [ngClass]="{'full': name?.value}"
+            >
+            <label for="name">Nazw konta</label>
+            <div class="error">
+                <p *ngIf="name?.errors?.['minlength'] || name?.errors?.['maxlength']">
+                    Od 3 do 15 znaków, tylko litery i liczby
+                </p>
+                <p *ngIf="name?.errors?.['incorrect']">Nieprawidłowa wartość</p>
+            </div>
+        </div>
+        <div class="field">
+            <input
+                type="text"
+                id="login"
+                formControlName="login"
+                [ngClass]="{'full': login?.value}"
+            >
+            <label for="login">Login</label>
+            <div class="error">
+                <p *ngIf="login?.errors?.['minlength'] || login?.errors?.['maxlength']">
+                    Od 3 do 15 znaków, tylko litery i liczby
+                </p>
+                <p *ngIf="login?.errors?.['incorrect']">Nieprawidłowa wartość</p>
+            </div>
+        </div>
+        <div class="field">
+            <input
+                type="password"
+                id="password"
+                formControlName="password"
+                [ngClass]="{'full': password?.value}"
+                (keyup)="checkPassword()"
+            >
+            <label for="password">Nowe hasło</label>
+            <div class="error">
+                <p *ngIf="password?.errors?.['minlength'] || password?.errors?.['maxlength']">
+                    Od 5 do 10 znaków, tylko litery i liczby
+                </p>
+                <p *ngIf="password?.errors?.['incorrect']">Nieprawidłowa wartość</p>
+            </div>
+        </div>
+        <div class="field">
+            <input
+                type="password"
+                id="confirmPassword"
+                formControlName="confirmPassword"
+                [ngClass]="{'full': confirmPassword?.value}"
+                (keyup)="checkPassword()"
+            >
+            <label for="confirmPassword">Potwierdź hasło</label>
+            <div class="error">
+                <p *ngIf="confirmPassword?.errors?.['minlength'] || confirmPassword?.errors?.['maxlength']">
+                    Od 5 do 10 znaków, tylko litery i liczby
+                </p>
+                <p *ngIf="confirmPassword?.errors?.['incorrect']">Nieprawidłowa wartość</p>
+                <p *ngIf="!samePassword">Hasła nie zgadzają się</p>
+            </div>
+        </div>
+        <button
+            class="btn btn--submit"
+            type="submit"
+            [disabled]="addForm.invalid || !samePassword || blockSubmit"
+        >
+            Stwórz
+        </button>
+    </form>
+</div>

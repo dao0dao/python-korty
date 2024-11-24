@@ -1,0 +1,151 @@
+@import "~src/assets/colors";
+
+.container {
+    height: 100%;
+}
+
+.title {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+}
+
+.actions {
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    .btn {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        svg {
+            position: relative;
+            max-width: 20px;
+            max-height: 20px;
+            transition: transform 0.25s ease-in-out;
+            &.upSideDown {
+                transform: rotate3d(1, 0, 0, 0.5turn);
+            }
+        }
+    }
+    input {
+        order: -1;
+        margin: 1rem;
+        padding: 5px 10px;
+        border-style: solid;
+        border-width: 0 0 1px;
+        border-color: $mainColorTwo;
+        outline: none;
+        &:focus,
+        &:focus-within {
+            border-color: $mainColorOne;
+        }
+    }
+}
+.list {
+    width: 100%;
+    margin: 1rem 0;
+    .element {
+        max-width: 600px;
+        padding: 0 5px;
+        margin: 0.5rem auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        .number {
+            margin-right: 1rem;
+        }
+        .name {
+            margin: 0 auto;
+            font-weight: 700;
+        }
+        .buttons {
+            flex-basis: 100%;
+            margin-top: 0.5rem;
+            text-align: right;
+            .btn {
+                margin: 0 0.5rem;
+                padding: 5px;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                svg {
+                    max-height: 15px;
+                    max-width: 15px;
+                    margin: 0;
+                }
+            }
+        }
+    }
+}
+.pagination {
+    width: 100%;
+    max-width: 450px;
+    padding: 0 5px;
+    margin-top: auto;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    &_perPage {
+        font-size: 12px;
+    }
+    &_count {
+        width: 35px;
+        height: 35px;
+        margin-right: auto;
+        text-align: center;
+        border: 1px solid $confirm;
+        outline: none;
+        -moz-appearance: textfield;
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            display: none;
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        &:focus,
+        &:focus-visible {
+            border-color: $mainColorOne;
+        }
+    }
+    &_info {
+        font-size: 12px;
+        min-width: 70px;
+        text-align: center;
+    }
+    &_btn {
+        width: 30px;
+        height: 30px;
+        padding: 5px;
+        border: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: transparent;
+        svg {
+            max-height: 100%;
+            max-width: 100%;
+            fill: $mainColorOne;
+        }
+    }
+}
+@media screen and (min-width: 992px) {
+    .actions {
+        input {
+            order: unset;
+        }
+    }
+    .list {
+        .element {
+            .buttons {
+                flex-basis: unset;
+                .btn {
+                    padding: 10px;
+                }
+            }
+        }
+    }
+}

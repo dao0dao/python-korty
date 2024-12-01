@@ -3,7 +3,7 @@ from django.contrib.auth.hashers import make_password
 from ...models.administrator import Administrator
 
 class Command(BaseCommand):
-    help = 'Tworzę admina'
+    help = 'Tworzy admina o takim samym loginie i haśle - admin'
     
     def handle(self, *args, **options):
         Administrator.objects.create(

@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
   logIn() {
     this.http
       .post<Login>(environment.apiLink + 'login', {
-        nick: this.nick?.value,
+        login: this.nick?.value,
         password: this.password?.value,
       })
       .subscribe({

@@ -9,7 +9,7 @@ class Administrator(models.Model):
     )
     
     name = models.CharField(null=False, max_length=15)    
-    login = models.CharField(null=False, max_length=15)    
+    login = models.CharField(null=False, max_length=15, unique=True)    
     password = models.CharField(null=False, max_length=256)    
     is_admin = models.BooleanField(default=False)
     

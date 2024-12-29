@@ -1,3 +1,7 @@
 from .administrator import Administrator
+from .time_table import Time_table
 
-__all__ = [ 'Administrator' ]
+all_models = (
+    Administrator,
+    Time_table
+)

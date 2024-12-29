@@ -1,8 +1,5 @@
 from django.contrib import admin
-from .models.all_models import __all__
+from .models.all_models import all_models
 
-# Register your models here.
-for model_name in __all__:
-    model = globals().get(model_name)
-    if model:
-        admin.site.register(model)
+for model in all_models:
+    admin.site.register(model)

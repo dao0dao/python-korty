@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('endpoints', '0002_alter_administrator_login'),
+        ('korty_api', '0002_alter_administrator_login'),
     ]
 
     operations = [

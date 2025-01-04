@@ -20,5 +20,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('endpoint/', include('endpoints.views'))
+    path('endpoint/', include('korty_api.views'))
 ]

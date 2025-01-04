@@ -14,8 +14,8 @@ class LoginEndpoint(View):
             user_id = request.session['user_id']
             
             try:
-                admin = Administrator.objects.get(id=user_id)
-                response_data = {"isLogin": True, "isAdmin": admin.is_admin, "user": admin.name}
+                administrator = Administrator.objects.get(id=user_id)
+                response_data = {"isLogin": True, "isAdmin": administrator.is_admin, "user": administrator.name}
                 response = JsonResponse(response_data)
 
             except:
@@ -47,16 +47,16 @@ class LoginEndpoint(View):
                 return response
             
             try:
-                admin = Administrator.objects.get(login=login)
+                administrator = Administrator.objects.get(login=login)
             except Administrator.DoesNotExist:
                 return response
             
-            if not check_password(password, admin.password):
+            if not check_password(password, administrator.password):
                 return JsonResponse({"error": "błędne dane logowania"})
             
-            response_data = {"isLogin": True, "isAdmin": admin.is_admin, "user": admin.name}                
+            response_data = {"isLogin": True, "isAdmin": administrator.is_admin, "user": administrator.name}                
             response = JsonResponse(response_data) 
-            request.session['user_id']=str(admin.id)
+            request.session['user_id']=str(administrator.id)
             return response
             
         except json.JSONDecodeError:

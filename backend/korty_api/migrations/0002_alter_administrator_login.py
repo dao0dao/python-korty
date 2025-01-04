@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('endpoints', '0001_initial'),
+        ('korty_api', '0001_initial'),
     ]
 
     operations = [

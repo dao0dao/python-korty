@@ -28,7 +28,7 @@ DEBUG = True
 # Application definition
 
 INSTALLED_APPS = [
-    'endpoints.apps.EndpointsConfig',
+    'korty_api.apps.KortyApiConfig',
     'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',

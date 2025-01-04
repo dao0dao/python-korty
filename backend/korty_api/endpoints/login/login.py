@@ -4,7 +4,7 @@ from django.views import View
 import json
 from django.middleware.csrf import get_token
 from django.contrib.auth.hashers import check_password
-from ..models.administrator import Administrator
+from ...models.administrator import Administrator
 
 
 class LoginEndpoint(View):

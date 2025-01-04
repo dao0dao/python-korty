@@ -1,3 +1,3 @@
-from .login.login import LoginEndpoint
+from .endpoints.login.login import LoginEndpoint
 
 __all__ = ['LoginEndpoint']

@@ -1,8 +1,6 @@
-from django.conf import settings
 from django.http import HttpRequest, JsonResponse
 from django.views import View
 import json
-from django.middleware.csrf import get_token
 from django.contrib.auth.hashers import check_password
 from ...models.administrator import Administrator
 
@@ -24,14 +22,7 @@ class LoginEndpoint(View):
                 
         except KeyError:
             response_data = {'isLogin': False}
-            csrf_token = get_token(request)
             response = JsonResponse(response_data, status=404)
-            response.set_cookie(
-                'csrftoken', 
-                csrf_token, 
-                httponly=False,
-                secure=not settings.DEBUG
-            )
         
         return response
     
@@ -43,16 +34,16 @@ class LoginEndpoint(View):
             password = body.get('password')
             
             if not login or not password:
-                response = JsonResponse({"error": "Niekompletne dane"})
+                response = JsonResponse({"error": "Niekompletne dane"},  status=400)
                 return response
             
             try:
                 administrator = Administrator.objects.get(login=login)
             except Administrator.DoesNotExist:
-                return response
+                return JsonResponse({"error": "błędne dane logowania"}, status=400)
             
             if not check_password(password, administrator.password):
-                return JsonResponse({"error": "błędne dane logowania"})
+                return JsonResponse({"error": "błędne dane logowania"},  status=400)
             
             response_data = {"isLogin": True, "isAdmin": administrator.is_admin, "user": administrator.name}                
             response = JsonResponse(response_data) 

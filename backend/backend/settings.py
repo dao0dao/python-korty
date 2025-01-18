@@ -55,7 +55,6 @@ CORS_ALLOW_CREDENTIALS = True
 
 if DEBUG:
     CORS_ALLOWED_ORIGINS = ['http://localhost:4200']
-    CSRF_TRUSTED_ORIGINS = ['http://localhost:4200']    
 
 ROOT_URLCONF = 'backend.urls'
 

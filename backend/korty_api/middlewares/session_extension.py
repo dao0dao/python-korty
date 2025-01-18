@@ -1,6 +1,7 @@
 from datetime import timedelta
 from django.http import HttpRequest, HttpResponse
 from django.utils.timezone import now
+from django.contrib.sessions.models import Session
 
 class ExtendedSessionMiddleware:
     def __init__ (self, get_response: HttpResponse):
@@ -10,8 +11,17 @@ class ExtendedSessionMiddleware:
     def __call__(self, request: HttpRequest):
         response = self.get_response(request)
         
-        if request.session.get_expiry_age() > 0:
-            new_expiry = now() + self.extension_duration
-            request.session.set_expiry(new_expiry)
+        
+        if 'sessionid' in request.COOKIES:
+            print(request.COOKIES['sessionid'])
+            session = Session.objects.filter(session_key=request.COOKIES['sessionid']).first()
+            if session:
+                new_expiry = now() + self.extension_duration
+                request.session.set_expiry(new_expiry)              
+        else:
+            request.session.delete()
+            print('nie ma ciasteczka')
+        
+        # if request.session.get_expiry_age() > 0:
             
         return response

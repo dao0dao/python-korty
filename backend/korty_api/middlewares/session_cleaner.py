@@ -11,12 +11,12 @@ class SessionCleanerMiddleware:
         self.extension_duration = timedelta(minutes=60)
         
     def __call__(self, request: HttpRequest):
-        # response = self.get_response(request)
+        response = self.get_response(request)
         
         all_sessions = Session.objects.all()
         
         for session in all_sessions:
-            if session.expire_date < now() + self.extension_duration:
+            if session.expire_date > now() + self.extension_duration:
                 session.delete()
         
-        # return response
+        return response

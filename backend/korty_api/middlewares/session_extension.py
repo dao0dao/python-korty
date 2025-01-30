@@ -12,11 +12,13 @@ class ExtendedSessionMiddleware:
     def __call__(self, request: HttpRequest):
         response = self.get_response(request)
         
+        if "login" in request.path:
+            return response
+        
         if not 'sessionid' in request.COOKIES:
             return self.not_login_response
         
         session = Session.objects.filter(session_key=request.COOKIES['sessionid']).first()
-        
         if not session or session.expire_date < now():
             request.session.delete()
             return self.not_login_response

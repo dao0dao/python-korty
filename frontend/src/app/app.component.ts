@@ -53,7 +53,7 @@ export class AppComponent implements OnInit {
   }
 
   logout() {
-    this.http.get(environment.apiLink + 'logout').subscribe({
+    this.http.delete(environment.apiLink + 'login').subscribe({
       next: (res) => {
         this.isMenu = false;
         this.loginState.logOut();

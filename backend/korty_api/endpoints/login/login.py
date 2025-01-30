@@ -53,3 +53,17 @@ class LoginEndpoint(View):
         except json.JSONDecodeError:
             response = JsonResponse({"error": "Invalid JSON"}, status=400)
             return response
+    
+    
+    def delete(_self, request: HttpRequest):
+        
+        if (not 'sessionid' in request.COOKIES
+            or not request.session):
+            
+            return JsonResponse({'isLogin': False}, status=404)
+        
+        request.session.delete()
+        response = JsonResponse({'isLogin': False}, status=200)
+        response.delete_cookie('sessionid')
+        return response
+        

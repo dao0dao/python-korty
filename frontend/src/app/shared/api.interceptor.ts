@@ -25,10 +25,7 @@ export class ApiInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<unknown>> {
     const csrfToken = this.cookieService.get('csrftoken');
     const cloneReq = request.clone({
-      withCredentials: environment.production ? false : true,
-      setHeaders: {
-        'X-CSRFToken': csrfToken,
-      },
+      withCredentials: environment.production ? false : true
     });
     return next.handle(cloneReq).pipe(
       catchError((err) =>

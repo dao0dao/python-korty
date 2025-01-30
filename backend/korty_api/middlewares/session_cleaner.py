@@ -2,6 +2,7 @@ from datetime import timedelta
 from django.http import HttpRequest, HttpResponse
 from django.contrib.sessions.models import Session
 from django.utils.timezone import now
+from django.core.cache import cache
 
 
 
@@ -12,11 +13,9 @@ class SessionCleanerMiddleware:
         
     def __call__(self, request: HttpRequest):
         response = self.get_response(request)
-        
-        all_sessions = Session.objects.all()
-        
-        for session in all_sessions:
-            if session.expire_date > now() + self.extension_duration:
-                session.delete()
+        last_session_cleanup = cache.get("last_session_cleanup")        
+        if not last_session_cleanup or now() - last_session_cleanup > timedelta(seconds=300):
+            Session.objects.filter(expire_date__lt=now()).delete()
+            cache.set(key="last_session_cleanup", value=now(), timeout=300)
         
         return response
